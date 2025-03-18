@@ -10,6 +10,15 @@
   background-color: var(--blue);
 }
 
+.tagline {
+  -ms-writing-mode: tb-rl;
+  writing-mode: vertical-rl;
+  font-weight: 700;
+  color: white;
+  font-size: 1.2rem;
+  letter-spacing: 0.3rem;
+}
+
 .section {
   padding: 0 5vw;
 }
@@ -25,6 +34,21 @@
   font-weight: 700;
   color: var(--blue);
   margin-bottom: 3rem;
+}
+
+.commentContainer {
+  background-color: var(--yellow);
+  border-radius: 10px;
+  padding: 3rem;
+  width: 35vw;
+  font-weight: 700;
+  line-height: 2rem;
+}
+
+.contact {
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--blue);
 }
 
 .movieContainer {
