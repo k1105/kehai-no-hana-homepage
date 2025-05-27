@@ -342,9 +342,8 @@ export default function Home() {
               <div className={styles.commentContainer}>
                 <p>
                   <span className={styles.segment}>正直に言えば</span>
-                  <span className={styles.segment}>
-                    「もっと帰ってきてくれたら嬉しいな」
-                  </span>
+                  <span className={styles.segment}>「もっと帰ってきて</span>
+                  <span className={styles.segment}>くれたら嬉しいな」</span>
                   <span className={styles.segment}>とは思います。</span>
                   <br />
                   <span className={styles.segment}>

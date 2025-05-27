@@ -49,10 +49,10 @@ const usageSteps: UsageStep[] = [
   {
     text: (
       <>
+        <span className={styles.segment}>香りや先端のアタッチメントは</span>
         <span className={styles.segment}>
-          香りはお好きな香水やアロマオイル等を
+          さまざまなものをお選びいただけます。
         </span>
-        <span className={styles.segment}>お選びください。</span>
       </>
     ),
     image: "/img/usage/step4.jpg",
