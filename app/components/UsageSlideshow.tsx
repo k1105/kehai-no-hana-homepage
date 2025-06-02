@@ -18,7 +18,7 @@ const usageSteps: UsageStep[] = [
         <span className={styles.segment}>もう1セットは大切な人の家に。</span>
       </>
     ),
-    image: "/img/usage/step1.jpg",
+    image: "/img/usage/step1.png",
   },
   {
     text: (
@@ -29,7 +29,7 @@ const usageSteps: UsageStep[] = [
         <span className={styles.segment}>準備完了です。</span>
       </>
     ),
-    image: "/img/usage/step2.jpg",
+    image: "/img/usage/step2.png",
   },
   {
     text: (
@@ -44,7 +44,7 @@ const usageSteps: UsageStep[] = [
         <span className={styles.segment}>あなたの気配を届けます。</span>
       </>
     ),
-    image: "/img/usage/step3.jpg",
+    image: "/img/usage/step3.png",
   },
   {
     text: (
