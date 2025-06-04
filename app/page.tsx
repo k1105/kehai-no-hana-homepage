@@ -20,7 +20,7 @@ export default function Home() {
   const [showLogo, setShowLogo] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
-
+  const [isMobile, setIsMobile] = useState(false);
   const handleSmoothScroll = (
     e: React.MouseEvent<HTMLAnchorElement>,
     id: string
@@ -49,6 +49,8 @@ export default function Home() {
       }
     );
 
+    if (window) setIsMobile(window.innerWidth <= 600);
+
     const sections = document.querySelectorAll("section[id]");
     sections.forEach((section) => observer.observe(section));
 
@@ -65,7 +67,6 @@ export default function Home() {
       const isScrollingDown = scrollPosition > lastScrollY;
       const isNearBottom =
         documentHeight - (scrollPosition + windowHeight) < windowHeight;
-      const isMobile = window.innerWidth <= 600;
 
       setShowFloatingMenu(
         scrollPosition > windowHeight && !isNearBottom && !isMobile
@@ -80,7 +81,7 @@ export default function Home() {
       window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("resize", handleScroll);
     };
-  }, [lastScrollY]);
+  }, [lastScrollY, isMobile]);
 
   return (
     <>
@@ -138,6 +139,13 @@ export default function Home() {
         </div>
         <p className={styles.initialTagline}>離れて暮らす大事な人へ</p>
         <div className={styles.firstView}>
+          <video autoPlay muted loop playsInline style={{objectFit: "cover"}}>
+            {isMobile ? (
+              <source src="/mov/movie_mobile.mp4" type="video/mp4" />
+            ) : (
+              <source src="/mov/movie.mp4" type="video/mp4" />
+            )}
+          </video>
           <div className={styles.logoWrapper}>
             <p>げんきだよ、のかわりに</p>
             <div className={styles.logoImageWrapper}>
@@ -393,7 +401,9 @@ export default function Home() {
           <div className={styles.contact}>
             <div className={styles.contactItemsWrapper}>
               <div className={`${styles.contactItem} ${styles.contactForm}`}>
-                <DLLogo style={{width: "80%", height: "auto"}} />
+                <div className={styles.bottomLogoWrapper}>
+                  <DLLogo style={{width: "100%", height: "auto"}} />
+                </div>
                 <Link href="https://dentsulab.tokyo/">
                   <div className={`${styles.contactItem}`}>
                     <p>お問い合わせ</p>

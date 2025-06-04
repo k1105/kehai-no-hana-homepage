@@ -6,14 +6,23 @@
 }
 
 .firstView {
-  width: 100vw;
-  height: 95vh;
-  background-image: url("/img/kv.jpg");
-  background-position: bottom;
-  background-size: cover;
+  width: 96vw;
+  height: 85vh;
+  margin: 2vw auto;
+  position: relative;
+  overflow: hidden;
   opacity: 0;
   animation: fadeIn 1s ease-out forwards;
   animation-delay: 2s;
+
+  video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 }
 
 .initialTagline {
@@ -142,6 +151,10 @@
     letter-spacing: 0.2rem;
     color: white;
   }
+}
+
+.bottomLogoWrapper {
+  width: 10rem;
 }
 
 .logoImageWrapper {
@@ -399,6 +412,11 @@
   }
 }
 
+.bottomLogoWrapper {
+  width: 12rem;
+  margin-left: -0.7rem;
+}
+
 .thumbnailWrapper:hover {
   background-color: rgba(0, 0, 0, 0.5);
 }
@@ -490,6 +508,12 @@
   width: 80%;
   height: auto;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+}
+
+.contactItem {
+  p {
+    font-size: 0.8rem;
+  }
 }
 
 @media screen and (max-width: 900px) {

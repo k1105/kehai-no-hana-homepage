@@ -2,6 +2,7 @@
   position: relative;
   width: 100%;
   min-height: 600px;
+  height: 60vh;
   background: transparent;
   display: flex;
   align-items: stretch;
@@ -96,13 +97,16 @@
     flex-direction: column;
     align-items: center;
     width: 100vw;
+    height: 100vh;
     min-height: unset;
     padding: 0;
     position: relative;
     background: transparent;
   }
   .imageSection {
-    position: relative;
+    bottom: auto;
+    top: 0;
+    right: 0;
     width: 90vw;
     max-width: 90vw;
     min-height: 180px;
@@ -121,7 +125,8 @@
   }
   .textSection {
     position: absolute;
-    bottom: 0;
+    bottom: auto;
+    top: 55vh;
     left: 0;
     width: 92vw;
     max-width: 98vw;
@@ -133,18 +138,19 @@
     background: #fff;
     border: 2px solid #231815;
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse;
     align-items: center;
     z-index: 2;
   }
   .stepText {
     font-size: 1rem;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
     text-align: center;
     font-weight: bold;
   }
   .navigation {
-    margin-top: 0.5rem;
+    margin-top: 0;
+    margin-bottom: 1.5rem;
   }
 
   .stepIndicator {
