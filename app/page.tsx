@@ -184,16 +184,26 @@ export default function Home() {
               <span className={styles.segment}>私たちは つながっている。</span>
             </p>
             <div className={styles.statementImages}>
-              <img
-                src="/img/mood_mic.jpg"
-                alt="mood mic"
-                className={styles.moodMic}
-              />
-              <img
-                src="/img/mood_flower.jpg"
-                alt="mood flower"
-                className={styles.moodFlower}
-              />
+              <div className={styles.moodMicWrapper}>
+                <div className={styles.statementImageWrapper}>
+                  <Image
+                    src="/img/mood_mic.jpg"
+                    alt="mood mic"
+                    fill
+                    style={{objectFit: "cover"}}
+                  />
+                </div>
+              </div>
+              <div className={styles.moodFlowerWrapper}>
+                <div className={styles.statementImageWrapper}>
+                  <Image
+                    src="/img/mood_flower.jpg"
+                    alt="mood flower"
+                    fill
+                    style={{objectFit: "cover"}}
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </AnimatedSection>

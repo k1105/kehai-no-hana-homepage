@@ -492,21 +492,22 @@
   min-height: 280px;
 }
 
-.moodMic {
+.moodMicWrapper {
   position: absolute;
   top: 0;
   left: 0;
-  width: 80%;
-  height: auto;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
 }
 
-.moodFlower {
+.moodFlowerWrapper {
   position: absolute;
   right: 0;
   bottom: 0;
-  width: 80%;
-  height: auto;
+}
+
+.statementImageWrapper {
+  position: relative;
+  width: 30vw;
+  aspect-ratio: 4/3;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
 }
 
@@ -525,24 +526,24 @@
     width: 100%;
     min-width: unset;
     max-width: unset;
-    height: 55vh;
+    height: 120vw;
     min-height: unset;
     max-height: unset;
     margin-top: 2rem;
   }
-  .moodMic {
+  .moodMicWrapper {
     position: absolute;
     top: 0;
     left: -5vw;
-    width: 100%;
-    height: auto;
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
   }
   .moodFlower {
     position: absolute;
     right: -5vw;
     bottom: 0;
-    width: 100%;
+  }
+
+  .statementImageWrapper {
+    width: 80vw;
     margin-bottom: 1rem;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   }
