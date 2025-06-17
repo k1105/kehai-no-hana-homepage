@@ -23,9 +23,7 @@ const usageSteps: UsageStep[] = [
   {
     text: (
       <>
-        <span className={styles.segment}>
-          花とマイクそれぞれをWi-Fiにつないだら、
-        </span>
+        <span className={styles.segment}>花とマイクをWi-Fiにつないだら、</span>
         <span className={styles.segment}>準備完了です。</span>
       </>
     ),
@@ -40,7 +38,7 @@ const usageSteps: UsageStep[] = [
         </span>
         <span className={styles.segment}>言ってみてください。</span>
         <span className={styles.segment}>その声に反応して、</span>
-        <span className={styles.segment}>相手の家の花に香りが噴射され、</span>
+        <span className={styles.segment}>相手の家の花から香りが広がり、</span>
         <span className={styles.segment}>あなたの気配を届けます。</span>
       </>
     ),

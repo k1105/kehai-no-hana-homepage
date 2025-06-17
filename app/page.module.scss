@@ -196,10 +196,14 @@
 }
 
 .statement {
-  font-weight: 700;
   color: var(--brown);
   line-height: 3rem;
   width: 40vw;
+
+  .shortHeight {
+    line-height: 2.4rem;
+    display: block;
+  }
 }
 
 .headline {

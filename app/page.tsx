@@ -141,7 +141,7 @@ export default function Home() {
             style={{objectFit: "contain"}}
           />
         </div>
-        <p className={styles.initialTagline}>離れて暮らす大事な人へ</p>
+        <p className={styles.initialTagline}>離れて暮らす、大切な人へ。</p>
         <div className={styles.firstView}>
           <video autoPlay muted loop playsInline style={{objectFit: "cover"}}>
             {isMobile ? (
@@ -151,7 +151,7 @@ export default function Home() {
             )}
           </video>
           <div className={styles.logoWrapper}>
-            <p>げんきだよ、のかわりに</p>
+            <p>元気だよ、のかわりに</p>
             <div className={styles.logoImageWrapper}>
               <Image
                 src="/logo.svg"
@@ -182,10 +182,17 @@ export default function Home() {
               <br />
               <span className={styles.segment}>3つの声に反応して、</span>
               <span className={styles.segment}>香りを届けます。</span>
-              <br />{" "}
-              <span className={styles.segment}>ゆるやかに でもたしかに</span>
               <br />
-              <span className={styles.segment}>私たちは つながっている。</span>
+              <br />
+              <span className={styles.shortHeight}>
+                私たちは
+                <br />
+                ゆるやかに
+                <br />
+                でもたしかに
+                <br />
+                つながっている。
+              </span>
             </p>
             <div className={styles.statementImages}>
               <div className={styles.moodMicWrapper}>
@@ -319,7 +326,6 @@ export default function Home() {
                   <span className={styles.segment}>LINEや</span>
                   <span className={styles.segment}>電話も、</span>
                   <span className={styles.segment}>なかなか</span>
-                  <span className={styles.segment}>頻繁には</span>
                   <span className={styles.segment}>できなかったり、</span>
                   <span className={styles.segment}>用も</span>
                   <span className={styles.segment}>ないのに</span>
@@ -360,12 +366,12 @@ export default function Home() {
                 <h3 className={styles.blue}>
                   子どもと離れて暮らす
                   <br />
-                  伊藤さん夫婦
+                  大瀧さんのご両親
                 </h3>
                 <div className={styles.profileImageWrapper}>
                   <Image
                     src="/img/ito_family.png"
-                    alt="itou"
+                    alt="otaki-parents"
                     fill
                     className={styles.profileImage}
                   />
