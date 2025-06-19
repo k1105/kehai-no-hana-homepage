@@ -10,6 +10,7 @@ import VideoModal from "./components/VideoModal";
 import {PlayButton} from "./components/play_button";
 import UsageSlideshow from "./components/UsageSlideshow";
 import {DLLogo} from "./components/DLLogo";
+import WebGLBackground from "./components/WebGLBackground";
 
 const zenKakuGothicNew = Zen_Kaku_Gothic_New({
   weight: ["400"],
@@ -98,6 +99,7 @@ export default function Home() {
 
   return (
     <>
+      <WebGLBackground />
       <main className={`${styles.main} ${zenKakuGothicNew.className}`}>
         <div
           className={`${styles.floatingMenu} ${
