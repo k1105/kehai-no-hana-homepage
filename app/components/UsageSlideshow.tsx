@@ -33,9 +33,10 @@ const usageSteps: UsageStep[] = [
     text: (
       <>
         <span className={styles.segment}>マイクの近くで</span>
-        <span className={styles.segment}>
-          「おはよう」「いってきます」「ただいま」を
-        </span>
+        <span className={styles.segment}>「おはよう」</span>
+        <span className={styles.segment}>「いってきます」</span>
+        <span className={styles.segment}>「ただいま」</span>
+        <span className={styles.segment}>を</span>
         <span className={styles.segment}>言ってみてください。</span>
         <span className={styles.segment}>その声に反応して、</span>
         <span className={styles.segment}>相手の家の花から香りが広がり、</span>

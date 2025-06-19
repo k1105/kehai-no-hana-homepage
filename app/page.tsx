@@ -69,24 +69,32 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    const handleScroll = () => {
-      const scrollPosition = window.scrollY;
-      const windowHeight = window.innerHeight;
-      const documentHeight = document.documentElement.scrollHeight;
-      const isScrollingDown = scrollPosition > lastScrollY;
-      const isNearBottom =
-        documentHeight - (scrollPosition + windowHeight) < windowHeight;
+    let ticking = false;
 
-      setScrollY(scrollPosition);
-      setShowFloatingMenu(
-        scrollPosition > windowHeight && !isNearBottom && !isMobile
-      );
-      if (isMobile) {
-        setShowLogo(scrollPosition > windowHeight && !isScrollingDown);
-      } else {
-        setShowLogo(scrollPosition > windowHeight && isScrollingDown);
+    const handleScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          const scrollPosition = window.scrollY;
+          const windowHeight = window.innerHeight;
+          const documentHeight = document.documentElement.scrollHeight;
+          const isScrollingDown = scrollPosition > lastScrollY;
+          const isNearBottom =
+            documentHeight - (scrollPosition + windowHeight) < windowHeight;
+
+          setScrollY(scrollPosition);
+          setShowFloatingMenu(
+            scrollPosition > windowHeight && !isNearBottom && !isMobile
+          );
+          if (isMobile) {
+            setShowLogo(scrollPosition > windowHeight && !isScrollingDown);
+          } else {
+            setShowLogo(scrollPosition > windowHeight && isScrollingDown);
+          }
+          setLastScrollY(scrollPosition);
+          ticking = false;
+        });
+        ticking = true;
       }
-      setLastScrollY(scrollPosition);
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -152,7 +160,11 @@ export default function Home() {
             style={{objectFit: "contain"}}
           />
         </div>
-        <p className={styles.initialTagline}>離れて暮らす、大切な人へ。</p>
+        <p className={styles.initialTagline}>
+          離れて暮らす、
+          <br />
+          大切な人へ。
+        </p>
         <div className={styles.firstView}>
           <video autoPlay muted loop playsInline style={{objectFit: "cover"}}>
             {isMobile ? (
@@ -188,7 +200,9 @@ export default function Home() {
               <span className={styles.segment}>きっかけができました。</span>
               <br />
               <span className={styles.segment}>
-                「おはよう」「いってきます」「ただいま」
+                <span style={{marginLeft: "-0.5rem"}}>
+                  「おはよう」「いってきます」「ただいま」
+                </span>
               </span>
               <br />
               <span className={styles.segment}>3つの声に反応して、</span>
@@ -209,7 +223,10 @@ export default function Home() {
               <div
                 className={styles.moodMicWrapper}
                 style={{
-                  transform: `translateY(${scrollY * 0.15}px)`,
+                  transform: isMobile
+                    ? "none"
+                    : `translateY(${scrollY * 0.15}px)`,
+                  willChange: isMobile ? "auto" : "transform",
                 }}
               >
                 <div className={styles.statementImageWrapper}>
@@ -224,7 +241,10 @@ export default function Home() {
               <div
                 className={styles.moodFlowerWrapper}
                 style={{
-                  transform: `translateY(${scrollY * 0.1}px)`,
+                  transform: isMobile
+                    ? "none"
+                    : `translateY(${scrollY * 0.1}px)`,
+                  willChange: isMobile ? "auto" : "transform",
                 }}
               >
                 <div className={styles.statementImageWrapper}>
