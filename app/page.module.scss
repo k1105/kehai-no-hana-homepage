@@ -199,6 +199,7 @@
   color: var(--brown);
   line-height: 3rem;
   width: 40vw;
+  font-weight: 700;
 
   .shortHeight {
     line-height: 2.4rem;
@@ -227,6 +228,9 @@
   &.right {
     margin-right: -3rem;
     margin-left: auto;
+    h3 {
+      text-align: right;
+    }
   }
 }
 

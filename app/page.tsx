@@ -5,17 +5,18 @@ import Image from "next/image";
 import AnimatedSection from "./components/AnimatedSection";
 import {useEffect, useState} from "react";
 import {Zen_Kaku_Gothic_New} from "next/font/google";
-import {Hina_Mincho} from "next/font/google";
+import {Zen_Old_Mincho} from "next/font/google";
 import VideoModal from "./components/VideoModal";
 import {PlayButton} from "./components/play_button";
 import UsageSlideshow from "./components/UsageSlideshow";
 import {DLLogo} from "./components/DLLogo";
-const hinaMincho = Hina_Mincho({
+
+const zenKakuGothicNew = Zen_Kaku_Gothic_New({
   weight: ["400"],
   subsets: ["latin"],
 });
 
-const zenKakuGothicNew = Zen_Kaku_Gothic_New({
+const zenOldMincho = Zen_Old_Mincho({
   weight: ["400"],
   subsets: ["latin"],
 });
@@ -27,6 +28,7 @@ export default function Home() {
   const [lastScrollY, setLastScrollY] = useState(0);
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [scrollY, setScrollY] = useState(0);
   const handleSmoothScroll = (
     e: React.MouseEvent<HTMLAnchorElement>,
     id: string
@@ -74,6 +76,7 @@ export default function Home() {
       const isNearBottom =
         documentHeight - (scrollPosition + windowHeight) < windowHeight;
 
+      setScrollY(scrollPosition);
       setShowFloatingMenu(
         scrollPosition > windowHeight && !isNearBottom && !isMobile
       );
@@ -201,7 +204,12 @@ export default function Home() {
               </span>
             </p>
             <div className={styles.statementImages}>
-              <div className={styles.moodMicWrapper}>
+              <div
+                className={styles.moodMicWrapper}
+                style={{
+                  transform: `translateY(${scrollY * 0.15}px)`,
+                }}
+              >
                 <div className={styles.statementImageWrapper}>
                   <Image
                     src="/img/mood_mic.jpg"
@@ -211,7 +219,12 @@ export default function Home() {
                   />
                 </div>
               </div>
-              <div className={styles.moodFlowerWrapper}>
+              <div
+                className={styles.moodFlowerWrapper}
+                style={{
+                  transform: `translateY(${scrollY * 0.1}px)`,
+                }}
+              >
                 <div className={styles.statementImageWrapper}>
                   <Image
                     src="/img/mood_flower.jpg"
@@ -225,7 +238,7 @@ export default function Home() {
           </div>
         </AnimatedSection>
         <AnimatedSection id="movie">
-          <h2 className={`${styles.headline} ${hinaMincho.className}`}>
+          <h2 className={`${styles.headline} ${zenOldMincho.className}`}>
             紹介動画
           </h2>
           <div className={styles.movieContainer}>
@@ -272,13 +285,13 @@ export default function Home() {
           videoId="aOPO_Qeg3zE"
         />
         <AnimatedSection id="usage">
-          <h2 className={`${styles.headline} ${hinaMincho.className}`}>
+          <h2 className={`${styles.headline} ${zenOldMincho.className}`}>
             使い方
           </h2>
           <UsageSlideshow />
         </AnimatedSection>
         <AnimatedSection id="comment">
-          <h2 className={`${styles.headline} ${hinaMincho.className}`}>
+          <h2 className={`${styles.headline} ${zenOldMincho.className}`}>
             <span className={styles.segment}>例えば、</span>
             <span className={styles.segment}>こんな方に</span>
           </h2>
@@ -296,7 +309,7 @@ export default function Home() {
                 <h3 className={styles.red}>
                   家族と離れて暮らす
                   <br />
-                  大瀧さん夫婦
+                  お子さんご夫婦
                 </h3>
               </div>
 
@@ -372,7 +385,7 @@ export default function Home() {
                 <h3 className={styles.blue}>
                   子どもと離れて暮らす
                   <br />
-                  大瀧さんのご両親
+                  ご両親
                 </h3>
                 <div className={styles.profileImageWrapper}>
                   <Image
