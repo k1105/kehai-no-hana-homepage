@@ -4,12 +4,18 @@ import styles from "./page.module.scss";
 import Image from "next/image";
 import AnimatedSection from "./components/AnimatedSection";
 import {useEffect, useState} from "react";
+import {Zen_Kaku_Gothic_New} from "next/font/google";
 import {Hina_Mincho} from "next/font/google";
 import VideoModal from "./components/VideoModal";
 import {PlayButton} from "./components/play_button";
 import UsageSlideshow from "./components/UsageSlideshow";
 import {DLLogo} from "./components/DLLogo";
 const hinaMincho = Hina_Mincho({
+  weight: ["400"],
+  subsets: ["latin"],
+});
+
+const zenKakuGothicNew = Zen_Kaku_Gothic_New({
   weight: ["400"],
   subsets: ["latin"],
 });
@@ -89,7 +95,7 @@ export default function Home() {
 
   return (
     <>
-      <main className={styles.main}>
+      <main className={`${styles.main} ${zenKakuGothicNew.className}`}>
         <div
           className={`${styles.floatingMenu} ${
             showFloatingMenu ? styles.visible : ""
