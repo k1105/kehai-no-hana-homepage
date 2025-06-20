@@ -6,6 +6,7 @@ import AnimatedSection from "./components/AnimatedSection";
 import {useEffect, useState} from "react";
 import {Zen_Kaku_Gothic_New} from "next/font/google";
 import {Zen_Old_Mincho} from "next/font/google";
+import {Inter} from "next/font/google";
 import VideoModal from "./components/VideoModal";
 import {PlayButton} from "./components/play_button";
 import UsageSlideshow from "./components/UsageSlideshow";
@@ -18,6 +19,11 @@ const zenKakuGothicNew = Zen_Kaku_Gothic_New({
 });
 
 const zenOldMincho = Zen_Old_Mincho({
+  weight: ["400"],
+  subsets: ["latin"],
+});
+
+const inter = Inter({
   weight: ["400"],
   subsets: ["latin"],
 });
@@ -291,7 +297,10 @@ export default function Home() {
                 </span>
                 <span className={styles.segment}>経験はありませんか？</span>
                 <br />
-                <span className={styles.segment}>
+                <span
+                  className={styles.segment}
+                  style={{marginLeft: "-0.5rem"}}
+                >
                   「気配の花」はそんな香りの力を使って
                 </span>
                 <span className={styles.segment}>
@@ -486,24 +495,23 @@ export default function Home() {
           <div className={styles.contact}>
             <div className={styles.contactItemsWrapper}>
               <div className={`${styles.contactItem} ${styles.contactForm}`}>
-                <div className={styles.bottomLogoWrapper}>
-                  <DLLogo style={{width: "100%", height: "auto"}} />
+                <div className={`${styles.contactItem}`}>
+                  <p>お問い合わせ</p>
+                  <h2 className={inter.className} style={{fontWeight: "700"}}>
+                    Dentsu Lab Tokyo
+                  </h2>
+                  <div className={styles.address}>
+                    <p>東京都中央区銀座7-14-16 太陽銀座ビル1階</p>
+                    <p>dentsu-lab-tokyo@dentsu.co.jp</p>
+                  </div>
                 </div>
-                <Link href="https://dentsulab.tokyo/">
-                  <div className={`${styles.contactItem}`}>
-                    <p>お問い合わせ</p>
-                    <h2>Dentsu Lab Tokyo</h2>
-                  </div>
-                  <div className={styles.bottomLink}>
-                    <p>公式サイトへ</p>
-                  </div>
-                </Link>
               </div>
               <div className={styles.contactItem}>
-                <div className={styles.address}>
-                  <p>東京都中央区銀座7-14-16 太陽銀座ビル1階</p>
-                  <p>dentsu-lab-tokyo@dentsu.co.jp</p>
-                </div>
+                <Link href="https://dentsulab.tokyo/">
+                  <div className={styles.bottomLogoWrapper}>
+                    <DLLogo style={{width: "100%", height: "auto"}} />
+                  </div>
+                </Link>
               </div>
             </div>
           </div>

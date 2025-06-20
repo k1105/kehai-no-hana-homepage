@@ -127,7 +127,7 @@ const WebGLBackground: React.FC<WebGLBackgroundProps> = ({className}) => {
           float noiseFactor = noiseFactors[i];
           float baseHue = baseHues[i];
           
-          float animatedTime = time;
+          float animatedTime = time * 1.5;
           vec2 animatedCenter = center + vec2(
             sin(animatedTime + float(i) * 0.5) * 0.02,
             cos(animatedTime + float(i) * 0.5) * 0.02

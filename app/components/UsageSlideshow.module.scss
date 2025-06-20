@@ -35,9 +35,23 @@
   height: 100%;
 }
 
+.slideshowImage {
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.imageVisible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.imageHidden {
+  opacity: 0;
+  transform: scale(1.05);
+}
+
 .textSection {
   position: absolute;
-  left: 40px;
+  left: 0;
   bottom: 40px;
   width: 25vw;
   background: #fff;
@@ -59,6 +73,17 @@
   text-align: center;
   margin-bottom: 2.5rem;
   letter-spacing: 0.02em;
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.textVisible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.textHidden {
+  opacity: 0;
+  transform: translateY(10px);
 }
 
 .navigation {
@@ -85,10 +110,18 @@
   border: 1.5px solid var(--brown);
   background: #fff;
   display: inline-block;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.dot:hover {
+  transform: scale(1.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .dotActive {
   background: var(--brown);
+  transform: scale(1.1);
 }
 
 @media (max-width: 900px) {
