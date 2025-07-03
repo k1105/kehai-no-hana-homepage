@@ -1,32 +1,19 @@
 .slideshowContainer {
   position: relative;
-  width: 100%;
-  min-height: 600px;
-  height: 60vh;
+  aspect-ratio: 1519/651;
+  width: 80vw;
+  margin: 0 auto;
   background: transparent;
   display: flex;
-  align-items: stretch;
-  justify-content: flex-end;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .imageSection {
-  position: absolute;
-  top: 40px;
-  right: 40px;
-  width: 60vw;
-  max-width: 800px;
-  height: 60vh;
-  min-height: 350px;
-  border-radius: 0.5rem;
-  overflow: hidden;
-  box-shadow: none;
-  display: flex;
-  align-items: flex-start;
-  justify-content: flex-end;
-}
-
-.segment {
-  display: inline-block;
+  position: relative;
+  width: 100%;
+  height: 100%;
 }
 
 .imageWrapper {
@@ -49,53 +36,25 @@
   transform: scale(1.05);
 }
 
-.textSection {
-  position: absolute;
-  left: 0;
-  bottom: 40px;
-  width: 25vw;
-  background: #fff;
-  border: 2px solid var(--brown);
-  border-radius: 0.5rem;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-  padding: 3rem 2rem 2.5rem 2rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  z-index: 2;
-  transition: all ease 300ms;
+/* PC用画像スタイル */
+.pcImage {
+  display: block;
 }
 
-.stepText {
-  color: var(--brown);
-  font-size: 1rem;
-  font-weight: bold;
-  text-align: center;
-  margin-bottom: 2.5rem;
-  letter-spacing: 0.02em;
-  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
-}
-
-.textVisible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.textHidden {
-  opacity: 0;
-  transform: translateY(10px);
+.spImage {
+  display: none;
 }
 
 .navigation {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.8rem;
-  margin-top: 0.5rem;
-}
-
-.navButton {
-  display: none;
+  z-index: 10;
 }
 
 .stepIndicator {
@@ -126,65 +85,41 @@
 
 @media (max-width: 900px) {
   .slideshowContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100vw;
-    height: 100vh;
+    aspect-ratio: 944/1077;
+    width: 90vw;
+    margin: 0 auto;
     min-height: unset;
     padding: 0;
-    position: relative;
-    background: transparent;
   }
+
   .imageSection {
-    bottom: auto;
-    top: 0;
-    right: 0;
-    width: 90vw;
-    max-width: 90vw;
-    min-height: 180px;
-    margin-left: 20vw;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    width: 100%;
+    height: 100%;
   }
+
   .imageWrapper {
-    width: 100vw;
-    min-height: 180px;
-    position: relative;
+    width: 100%;
+    height: 100%;
   }
-  .textSection {
-    position: absolute;
-    bottom: auto;
-    top: 55vh;
-    left: 0;
-    width: 92vw;
-    max-width: 98vw;
-    min-width: 0;
-    margin: 0;
-    padding: 2rem 1rem 1.5rem 1rem;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-    background: #fff;
-    display: flex;
-    flex-direction: column-reverse;
-    align-items: center;
-    z-index: 2;
+
+  /* SP用画像スタイル */
+  .pcImage {
+    display: none;
   }
-  .stepText {
-    font-size: 1rem;
-    margin-bottom: 1rem;
-    text-align: center;
-    font-weight: bold;
+
+  .spImage {
+    display: block;
+    aspect-ratio: 944/1077;
   }
+
   .navigation {
-    margin-top: 0;
-    margin-bottom: 1.5rem;
+    bottom: 1rem;
   }
 
   .stepIndicator {
     gap: 0.8rem;
   }
+
   .dot {
     width: 16px;
     height: 16px;

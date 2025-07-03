@@ -6,9 +6,14 @@ import styles from "../page.module.scss";
 interface AnimatedSectionProps {
   children: React.ReactNode;
   id: string;
+  style?: React.CSSProperties;
 }
 
-export default function AnimatedSection({children, id}: AnimatedSectionProps) {
+export default function AnimatedSection({
+  children,
+  id,
+  style,
+}: AnimatedSectionProps) {
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -37,7 +42,7 @@ export default function AnimatedSection({children, id}: AnimatedSectionProps) {
   }, []);
 
   return (
-    <section ref={sectionRef} className={styles.section} id={id}>
+    <section ref={sectionRef} className={styles.section} id={id} style={style}>
       {children}
     </section>
   );

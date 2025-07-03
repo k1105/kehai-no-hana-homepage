@@ -1,0 +1,34 @@
+{
+  "shot": {
+    "composition": "Cinematic medium close-up, 50mm lens, shot on Sony FX3, shallow depth of field, handheld with stabilizer",
+    "camera_motion": "gentle arc tracking around subject",
+    "frame_rate": "24fps",
+    "film_grain": "subtle fine grain emulating Kodak Vision3 250D"
+  },
+  "subject": {
+    "description": "A Japanese female idol in her early 20s with soft fair skin and graceful facial features. Her eyes are large and slightly upturned, framed by fluttery lashes, and her lips form a gentle bow shape. She has long, dark brown hair styled into two low pigtails with light pink scrunchies, and a pair of tiny sakura-shaped earrings.",
+    "wardrobe": "She wears a light denim jacket over a white cropped tee with a small red embroidered heart on the chest, paired with high-waisted tan pleated shorts. A tiny pastel crossbody pouch hangs by her side, and her nails are painted a delicate pearl pink."
+  },
+  "scene": {
+    "location": "a lively Japanese festival yatai street in Osaka",
+    "time_of_day": "dusk turning into night",
+    "environment": "festival booths under paper lanterns, streamers overhead, people in yukatas walking around, smoke rising from grills, ambient laughter and chatter"
+  },
+  "visual_details": {
+    "action": "The idol picks up a steaming piece of takoyaki with a wooden toothpick, blows gently, then pops it into her mouth, savoring the flavor before leaning toward the mic and whispering 'oishii' in an ASMR tone",
+    "props": "paper tray of takoyaki with bonito flakes and sauce, a small bottle of Ramune, paper napkin, lapel mic hidden beneath collar"
+  },
+  "cinematography": {
+    "lighting": "natural ambient light from lanterns and booth lights, warm golden glows flickering across her face",
+    "tone": "intimate, joyful, festive"
+  },
+  "audio": {
+    "ambient": "festival music in background, sizzling food, muffled crowd sounds, children laughing, soft ASMR whispering and chewing"
+  },
+  "color_palette": "naturalistic with warm lantern tones, vibrant reds and yellows from food and booths, pastel accents in wardrobe",
+  "dialogue": {
+    "character": "Japanese Idol",
+    "line": "oishii",
+    "subtitles": false
+  }
+}
