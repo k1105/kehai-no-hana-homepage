@@ -1,3 +1,8 @@
+.container {
+  width: 100vw;
+  overflow-x: hidden;
+}
+
 .slideshowContainer {
   position: relative;
   aspect-ratio: 1519/651;
@@ -14,6 +19,7 @@
   position: relative;
   width: 100%;
   height: 100%;
+  /* overflow: hidden; 一時的に削除 */
 }
 
 .imageWrapper {
@@ -22,18 +28,33 @@
   height: 100%;
 }
 
+.slideshowTrack {
+  display: flex;
+  width: 500%; /* 5枚の画像分の幅 */
+  height: 100%;
+  transition: transform 0.3s ease-in-out;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.pcTrack {
+  display: flex;
+}
+
+.spTrack {
+  display: none;
+}
+
+.slideItem {
+  position: relative;
+  width: 20%; /* 5枚の画像なので各20% */
+  height: 100%;
+  flex-shrink: 0;
+}
+
 .slideshowImage {
-  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
-}
-
-.imageVisible {
-  opacity: 1;
-  transform: scale(1);
-}
-
-.imageHidden {
-  opacity: 0;
-  transform: scale(1.05);
+  transition: opacity 0.3s ease-in-out;
 }
 
 /* PC用画像スタイル */
@@ -100,6 +121,14 @@
   .imageWrapper {
     width: 100%;
     height: 100%;
+  }
+
+  .pcTrack {
+    display: none;
+  }
+
+  .spTrack {
+    display: flex;
   }
 
   /* SP用画像スタイル */

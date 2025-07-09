@@ -30,49 +30,13 @@ const inter = Inter({
 });
 
 export default function Home() {
-  const [activeSection, setActiveSection] = useState<string>("");
-  const [showFloatingMenu, setShowFloatingMenu] = useState(false);
   const [showLogo, setShowLogo] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [scrollY, setScrollY] = useState(0);
-  const handleSmoothScroll = (
-    e: React.MouseEvent<HTMLAnchorElement>,
-    id: string
-  ) => {
-    e.preventDefault();
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }
-  };
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveSection(entry.target.id);
-          }
-        });
-      },
-      {
-        threshold: 0.5,
-      }
-    );
-
     if (window) setIsMobile(window.innerWidth <= 600);
-
-    const sections = document.querySelectorAll("section[id]");
-    sections.forEach((section) => observer.observe(section));
-
-    return () => {
-      sections.forEach((section) => observer.unobserve(section));
-    };
   }, []);
 
   useEffect(() => {
@@ -83,15 +47,7 @@ export default function Home() {
         requestAnimationFrame(() => {
           const scrollPosition = window.scrollY;
           const windowHeight = window.innerHeight;
-          const documentHeight = document.documentElement.scrollHeight;
           const isScrollingDown = scrollPosition > lastScrollY;
-          const isNearBottom =
-            documentHeight - (scrollPosition + windowHeight) < windowHeight;
-
-          setScrollY(scrollPosition);
-          setShowFloatingMenu(
-            scrollPosition > windowHeight && !isNearBottom && !isMobile
-          );
           if (isMobile) {
             setShowLogo(scrollPosition > windowHeight && !isScrollingDown);
           } else {
@@ -117,46 +73,6 @@ export default function Home() {
       <WebGLBackground />
       <main className={`${styles.main} ${zenKakuGothicNew.className}`}>
         <div
-          className={`${styles.floatingMenu} ${
-            showFloatingMenu ? styles.visible : ""
-          }`}
-        >
-          <ul>
-            <li className={activeSection === "movie" ? styles.active : ""}>
-              <Link
-                href="#movie"
-                onClick={(e) => handleSmoothScroll(e, "movie")}
-              >
-                紹介動画
-              </Link>
-            </li>
-            <li className={activeSection === "usage" ? styles.active : ""}>
-              <Link
-                href="#usage"
-                onClick={(e) => handleSmoothScroll(e, "usage")}
-              >
-                使い方
-              </Link>
-            </li>
-            <li className={activeSection === "comment" ? styles.active : ""}>
-              <Link
-                href="#comment"
-                onClick={(e) => handleSmoothScroll(e, "comment")}
-              >
-                例えば、こんな方に
-              </Link>
-            </li>
-            <li className={activeSection === "contact" ? styles.active : ""}>
-              <Link
-                href="#contact"
-                onClick={(e) => handleSmoothScroll(e, "contact")}
-              >
-                お問い合わせ
-              </Link>
-            </li>
-          </ul>
-        </div>
-        <div
           className={`${styles.fixedLogo} ${showLogo ? styles.visible : ""}`}
         >
           <Image
@@ -172,73 +88,81 @@ export default function Home() {
           <br />
           大切な人へ。
         </p>
-        <div className={styles.firstView}>
-          <video autoPlay muted loop playsInline style={{objectFit: "cover"}}>
-            {isMobile ? (
-              <source src="/mov/movie_mobile.mp4" type="video/mp4" />
-            ) : (
-              <source src="/mov/movie.mp4" type="video/mp4" />
-            )}
-          </video>
+
+        {/* sticky logo wrapper */}
+        <div className={styles.stickyLogoWrapper}>
           <div className={styles.logoWrapper}>
             <p>元気だよ、のかわりに</p>
             <div className={styles.logoImageWrapper}>
-              <Logo
-                style={{
-                  objectFit: "contain",
-                  fill: "white",
-                }}
-              />
+              <Logo style={{objectFit: "contain", fill: "white"}} />
             </div>
           </div>
-        </div>
-        <AnimatedSection id="statement">
-          <div className={styles.statementSection}>
-            <div className={styles.statementLogoWrapper}>
-              <p>元気だよ、のかわりに</p>
-              <div className={styles.logoImageWrapper}>
-                <Logo
-                  style={{
-                    objectFit: "contain",
-                    fill: "var(--brown)",
-                  }}
-                />
-              </div>
-            </div>
-            <p className={styles.statement}>
-              ちゃんと元気でいるか、気になる。
-              <br />
-              <span className={styles.segment}>けれど、毎日連絡をとるのは</span>
-              <span className={styles.segment}>なかなか難しい。</span>
-              <br />
-              離れて暮らす、大切な人とのあいだに
-              <br />
-              <span className={styles.segment}>お互いの気配を気軽に感じる</span>
-              <span className={styles.segment}>きっかけができました。</span>
-              <br />
-              <span className={styles.segment}>
-                <span style={{marginLeft: "-0.5rem"}}>
-                  「おはよう」「いってきます」「ただいま」
+          <div className={styles.firstView}>
+            <video autoPlay muted loop playsInline style={{objectFit: "cover"}}>
+              {isMobile ? (
+                <source src="/mov/movie_mobile.mp4" type="video/mp4" />
+              ) : (
+                <source src="/mov/movie.mp4" type="video/mp4" />
+              )}
+            </video>
+          </div>
+          <AnimatedSection id="statement" style={{padding: 0}}>
+            <div className={styles.statementSection}>
+              <div className={styles.statementLogoWrapper}></div>
+              <p className={styles.statement}>
+                ちゃんと元気でいるか、気になる。
+                <br />
+                <span className={styles.segment}>
+                  けれど、毎日連絡をとるのは
                 </span>
-              </span>
-              <br />
-              <span className={styles.segment}>3つの声に反応して、</span>
-              <span className={styles.segment}>香りを届けます。</span>
-            </p>
-          </div>
-        </AnimatedSection>
+                <span className={styles.segment}>なかなか難しい。</span>
+                <br />
+                離れて暮らす、大切な人とのあいだに
+                <br />
+                <span className={styles.segment}>
+                  お互いの気配を気軽に感じる
+                </span>
+                <span className={styles.segment}>きっかけができました。</span>
+                <br />
+                <span className={styles.segment}>
+                  <span style={{marginLeft: "-0.5rem"}}>
+                    「おはよう」「いってきます」「ただいま」
+                  </span>
+                </span>
+                <br />
+                <span className={styles.segment}>3つの声に反応して、</span>
+                <span className={styles.segment}>香りを届けます。</span>
+              </p>
+            </div>
+          </AnimatedSection>
+        </div>
+
         <AnimatedSection id="image" style={{padding: 0}}>
           <div className={styles.imageSection}>
+            <p
+              className={styles.statement}
+              style={{
+                color: "white",
+                position: "sticky",
+                top: "40vh",
+                marginLeft: "10vw",
+                marginBottom: "20rem",
+                zIndex: 1000,
+              }}
+            >
+              <span className={styles.shortHeight}>
+                私たちは
+                <br />
+                ゆるやかに
+                <br />
+                でもたしかに
+                <br />
+                つながっている。
+              </span>
+            </p>
+
             <div className={styles.statementImages}>
-              <div
-                className={styles.moodMicWrapper}
-                style={{
-                  transform: isMobile
-                    ? "none"
-                    : `translateY(${scrollY * 0.15}px)`,
-                  willChange: isMobile ? "auto" : "transform",
-                }}
-              >
+              <div className={styles.moodMicWrapper}>
                 <div className={styles.statementImageWrapper}>
                   <Image
                     src="/img/mood_mic.jpg"
@@ -248,35 +172,7 @@ export default function Home() {
                   />
                 </div>
               </div>
-              <div
-                className={styles.moodFlowerWrapper}
-                style={{
-                  transform: isMobile
-                    ? "none"
-                    : `translateY(${scrollY * 0.1}px)`,
-                  willChange: isMobile ? "auto" : "transform",
-                }}
-              >
-                <p
-                  className={styles.statement}
-                  style={{
-                    color: "white",
-                    position: "absolute",
-                    top: "-5rem",
-                    left: "20vw",
-                    zIndex: 10,
-                  }}
-                >
-                  <span className={styles.shortHeight}>
-                    私たちは
-                    <br />
-                    ゆるやかに
-                    <br />
-                    でもたしかに
-                    <br />
-                    つながっている。
-                  </span>
-                </p>
+              <div className={styles.moodFlowerWrapper}>
                 <div className={styles.statementImageWrapper}>
                   <Image
                     src="/img/mood_flower.jpg"
@@ -349,21 +245,19 @@ export default function Home() {
           <UsageSlideshow />
         </AnimatedSection>
         <AnimatedSection id="comment" style={{padding: 0}}>
-          <h2
-            className={`${styles.headline} ${zenOldMincho.className}`}
-            style={{
-              textAlign: "center",
-              position: "absolute",
-              top: "5rem",
-              left: 0,
-              width: "100vw",
-            }}
-          >
-            <span className={styles.segment}>例えば、</span>
-            <span className={styles.segment}>こんな方に</span>
-          </h2>
           <div className={styles.commentSectionContainer}>
             <div className={`${styles.commentSectionWrapper} ${styles.left}`}>
+              <h2
+                className={`${styles.headline} ${zenOldMincho.className}`}
+                style={{
+                  textAlign: "center",
+                  width: "100vw",
+                  // marginBottom: "10rem",
+                }}
+              >
+                <span className={styles.segment}>例えば、</span>
+                <span className={styles.segment}>こんな方に</span>
+              </h2>
               <div className={styles.commentContentWrapper}>
                 <div className={styles.profileContainer}>
                   <h3 className={styles.red}>

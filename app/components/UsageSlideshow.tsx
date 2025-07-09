@@ -20,68 +20,81 @@ const usageStepsSp = [
 
 export default function UsageSlideshow() {
   const [currentStep, setCurrentStep] = useState(0);
-  const [isTransitioning, setIsTransitioning] = useState(false);
-  const [isImageVisible, setIsImageVisible] = useState(true);
 
   const handleStepChange = (newStep: number) => {
-    if (newStep === currentStep || isTransitioning) return;
-
-    setIsTransitioning(true);
-    setIsImageVisible(false);
-
-    setTimeout(() => {
-      setCurrentStep(newStep);
-      setIsImageVisible(true);
-      setIsTransitioning(false);
-    }, 300);
+    if (newStep === currentStep) return;
+    setCurrentStep(newStep);
   };
 
+  // 各画像の幅が20%なので、移動量は20%ずつ
+  const translateX = currentStep * 20;
+
   return (
-    <div className={styles.slideshowContainer}>
-      <div className={styles.imageSection}>
-        <div className={styles.imageWrapper}>
-          {/* PC用画像 */}
-          <Image
-            src={usageSteps[currentStep]}
-            alt={`Step ${currentStep + 1}`}
-            fill
-            style={{objectFit: "contain"}}
-            sizes="100vw"
-            priority
-            className={`${styles.slideshowImage} ${styles.pcImage} ${
-              isImageVisible ? styles.imageVisible : styles.imageHidden
-            }`}
-          />
-          {/* SP用画像 */}
-          <Image
-            src={usageStepsSp[currentStep]}
-            alt={`Step ${currentStep + 1}`}
-            fill
-            style={{objectFit: "contain"}}
-            sizes="100vw"
-            priority
-            className={`${styles.slideshowImage} ${styles.spImage} ${
-              isImageVisible ? styles.imageVisible : styles.imageHidden
-            }`}
-          />
+    <div className={styles.container}>
+      <div className={styles.slideshowContainer}>
+        <div className={styles.imageSection}>
+          <div className={styles.imageWrapper}>
+            {/* PC用画像 */}
+            <div
+              className={`${styles.slideshowTrack} ${styles.pcTrack}`}
+              style={{
+                transform: `translateX(-${translateX}%)`,
+              }}
+            >
+              {usageSteps.map((step, index) => (
+                <div key={index} className={styles.slideItem}>
+                  <Image
+                    src={step}
+                    alt={`Step ${index + 1}`}
+                    fill
+                    style={{objectFit: "contain"}}
+                    sizes="100vw"
+                    priority
+                    className={`${styles.slideshowImage} ${styles.pcImage}`}
+                  />
+                </div>
+              ))}
+            </div>
+            {/* SP用画像 */}
+            <div
+              className={`${styles.slideshowTrack} ${styles.spTrack}`}
+              style={{
+                transform: `translateX(-${translateX}%)`,
+              }}
+            >
+              {usageStepsSp.map((step, index) => (
+                <div key={`sp-${index}`} className={styles.slideItem}>
+                  <Image
+                    src={step}
+                    alt={`Step ${index + 1}`}
+                    fill
+                    style={{objectFit: "contain"}}
+                    sizes="100vw"
+                    priority
+                    className={`${styles.slideshowImage} ${styles.spImage}`}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
-      </div>
-      <div className={styles.navigation}>
-        <span className={styles.stepIndicator}>
-          {usageSteps.map((_, idx) => (
-            <span
-              key={idx}
-              className={
-                idx === currentStep
-                  ? `${styles.dot} ${styles.dotActive}`
-                  : styles.dot
-              }
-              onClick={() => handleStepChange(idx)}
-              style={{cursor: "pointer"}}
-              aria-label={`ステップ${idx + 1}`}
-            />
-          ))}
-        </span>
+        <div className={styles.navigation}>
+          <span className={styles.stepIndicator}>
+            {usageSteps.map((_, idx) => (
+              <span
+                key={idx}
+                className={
+                  idx === currentStep
+                    ? `${styles.dot} ${styles.dotActive}`
+                    : styles.dot
+                }
+                onClick={() => handleStepChange(idx)}
+                style={{cursor: "pointer"}}
+                aria-label={`ステップ${idx + 1}`}
+              />
+            ))}
+          </span>
+        </div>
       </div>
     </div>
   );
