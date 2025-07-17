@@ -1,76 +1,140 @@
 "use client";
-import Link from "next/link";
 import styles from "./page.module.scss";
 import Image from "next/image";
 import AnimatedSection from "./components/AnimatedSection";
-import {useEffect, useState} from "react";
-import {Zen_Kaku_Gothic_New} from "next/font/google";
-import {Zen_Old_Mincho} from "next/font/google";
-import {Inter} from "next/font/google";
-import VideoModal from "./components/VideoModal";
-import {PlayButton} from "./components/play_button";
+import {useEffect, useRef, useState} from "react";
+import {Zen_Kaku_Gothic_New, Zen_Old_Mincho} from "next/font/google";
 import UsageSlideshow from "./components/UsageSlideshow";
-import {DLLogo} from "./components/DLLogo";
 import WebGLBackground from "./components/WebGLBackground";
 import Logo from "./components/Logo";
+import CommentSection from "./components/CommentSection";
+import ImageSection from "./components/ImageSection";
+import MovieSection from "./components/MovieSection";
+import StatementSection from "./components/StatementSection";
+import ContactSection from "./components/ContactSection";
+import gsap from "gsap";
+import {ScrollTrigger} from "gsap/ScrollTrigger";
+import {useIsomorphicLayoutEffect} from "./hooks/useIsomorphicLayoutEffect";
 
 const zenKakuGothicNew = Zen_Kaku_Gothic_New({
   weight: ["400"],
   subsets: ["latin"],
 });
-
-const zenOldMincho = Zen_Old_Mincho({
-  weight: ["400"],
-  subsets: ["latin"],
-});
-
-const inter = Inter({
-  weight: ["400"],
-  subsets: ["latin"],
-});
+const zenOldMincho = Zen_Old_Mincho({weight: ["400"], subsets: ["latin"]});
 
 export default function Home() {
   const [showLogo, setShowLogo] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
-  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
+  const sectionRef = useRef<HTMLDivElement>(null); // pin 対象
+  const containerRef = useRef<HTMLDivElement>(null); // 横に動かす
+
+  /* モバイル判定 */
   useEffect(() => {
-    if (window) setIsMobile(window.innerWidth <= 600);
+    if (typeof window !== "undefined") setIsMobile(window.innerWidth <= 600);
   }, []);
 
+  /* 横スクロール初期化 */
+  useIsomorphicLayoutEffect(() => {
+    if (!sectionRef.current || !containerRef.current) return;
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    /* パネル枚数と固定距離 */
+    const panels = gsap.utils.toArray<HTMLElement>(
+      ".panel",
+      containerRef.current
+    );
+    const total = panels.length;
+    const scrollLength = window.innerWidth * (total - 1); // 固定距離で OK
+
+    /* 必要分の高さを確保 (pinSpacing:false の代わり) */
+    sectionRef.current.style.height = `${scrollLength + window.innerHeight}px`;
+
+    /* パネル列の幅を強制 */
+    containerRef.current.style.width = `${total * 100}vw`;
+
+    /* GSAP アニメーション */
+    const tween = gsap.to(containerRef.current, {
+      x: -scrollLength,
+      ease: "none",
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: "top top",
+        end: `+=${scrollLength}`,
+        scrub: 1,
+        pin: true,
+        pinSpacing: false,
+        anticipatePin: 1,
+        // markers: true,
+        onUpdate: (self) => {
+          // アニメーション完了時に高さを戻す
+          if (
+            self.progress >= 1 &&
+            containerRef.current &&
+            sectionRef.current
+          ) {
+            gsap.set(containerRef.current, {
+              height: "100vh",
+              width: "100vw",
+            });
+            sectionRef.current.style.height = "100vh";
+          }
+        },
+      },
+    });
+
+    /* 画像ロード/リサイズでリフレッシュ */
+    const refresh = () => ScrollTrigger.refresh();
+    window.addEventListener("resize", refresh);
+    window.addEventListener("load", refresh);
+
+    return () => {
+      tween.kill();
+      ScrollTrigger.getAll().forEach((t) => t.kill());
+      window.removeEventListener("resize", refresh);
+      window.removeEventListener("load", refresh);
+    };
+  }, []);
+
+  /* ロゴ表示制御（変更なし） */
   useEffect(() => {
     let ticking = false;
-
-    const handleScroll = () => {
+    const onScroll = () => {
       if (!ticking) {
         requestAnimationFrame(() => {
-          const scrollPosition = window.scrollY;
-          const windowHeight = window.innerHeight;
-          const isScrollingDown = scrollPosition > lastScrollY;
-          if (isMobile) {
-            setShowLogo(scrollPosition > windowHeight && !isScrollingDown);
-          } else {
-            setShowLogo(scrollPosition > windowHeight && isScrollingDown);
-          }
-          setLastScrollY(scrollPosition);
+          const y = window.scrollY;
+          const vh = window.innerHeight;
+          const down = y > lastScrollY;
+          setShowLogo(isMobile ? y > vh && !down : y > vh && down);
+          setLastScrollY(y);
           ticking = false;
         });
         ticking = true;
       }
     };
-
-    window.addEventListener("scroll", handleScroll);
-    window.addEventListener("resize", handleScroll);
+    window.addEventListener("scroll", onScroll);
+    window.addEventListener("resize", onScroll);
     return () => {
-      window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("resize", handleScroll);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
     };
   }, [lastScrollY, isMobile]);
+
+  /* 使い方画像 */
+  const steps = [
+    {step: "/img/usage/pc/step1.png", stepSp: "/img/usage/sp/step1.png"},
+    {step: "/img/usage/pc/step2.png", stepSp: "/img/usage/sp/step2.png"},
+    {step: "/img/usage/pc/step3.png", stepSp: "/img/usage/sp/step3.png"},
+    {step: "/img/usage/pc/step4.png", stepSp: "/img/usage/sp/step4.png"},
+    {step: "/img/usage/pc/step5.png", stepSp: "/img/usage/sp/step5.png"},
+  ];
 
   return (
     <>
       <WebGLBackground />
+
       <main className={`${styles.main} ${zenKakuGothicNew.className}`}>
         <div
           className={`${styles.fixedLogo} ${showLogo ? styles.visible : ""}`}
@@ -83,13 +147,13 @@ export default function Home() {
             style={{objectFit: "contain"}}
           />
         </div>
+
         <p className={styles.initialTagline}>
           離れて暮らす、
           <br />
           大切な人へ。
         </p>
 
-        {/* sticky logo wrapper */}
         <div className={styles.stickyLogoWrapper}>
           <div className={styles.logoWrapper}>
             <p>元気だよ、のかわりに</p>
@@ -107,377 +171,47 @@ export default function Home() {
             </video>
           </div>
           <AnimatedSection id="statement" style={{padding: 0}}>
-            <div className={styles.statementSection}>
-              <div className={styles.statementLogoWrapper}></div>
-              <p className={styles.statement}>
-                ちゃんと元気でいるか、気になる。
-                <br />
-                <span className={styles.segment}>
-                  けれど、毎日連絡をとるのは
-                </span>
-                <span className={styles.segment}>なかなか難しい。</span>
-                <br />
-                離れて暮らす、大切な人とのあいだに
-                <br />
-                <span className={styles.segment}>
-                  お互いの気配を気軽に感じる
-                </span>
-                <span className={styles.segment}>きっかけができました。</span>
-                <br />
-                <span className={styles.segment}>
-                  <span style={{marginLeft: "-0.5rem"}}>
-                    「おはよう」「いってきます」「ただいま」
-                  </span>
-                </span>
-                <br />
-                <span className={styles.segment}>3つの声に反応して、</span>
-                <span className={styles.segment}>香りを届けます。</span>
-              </p>
-            </div>
+            <StatementSection />
           </AnimatedSection>
         </div>
 
         <AnimatedSection id="image" style={{padding: 0}}>
-          <div className={styles.imageSection}>
-            <p
-              className={styles.statement}
-              style={{
-                color: "white",
-                position: "sticky",
-                top: "40vh",
-                marginLeft: "10vw",
-                marginBottom: "20rem",
-                zIndex: 1000,
-              }}
-            >
-              <span className={styles.shortHeight}>
-                私たちは
-                <br />
-                ゆるやかに
-                <br />
-                でもたしかに
-                <br />
-                つながっている。
-              </span>
-            </p>
-
-            <div className={styles.statementImages}>
-              <div className={styles.moodMicWrapper}>
-                <div className={styles.statementImageWrapper}>
-                  <Image
-                    src="/img/mood_mic.jpg"
-                    alt="mood mic"
-                    fill
-                    style={{objectFit: "cover"}}
-                  />
-                </div>
-              </div>
-              <div className={styles.moodFlowerWrapper}>
-                <div className={styles.statementImageWrapper}>
-                  <Image
-                    src="/img/mood_flower.jpg"
-                    alt="mood flower"
-                    fill
-                    style={{objectFit: "cover"}}
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
+          <ImageSection />
         </AnimatedSection>
         <AnimatedSection id="movie" style={{background: "#b1bcbe", padding: 0}}>
-          {/* <h2 className={`${styles.headline} ${zenOldMincho.className}`}>
-            紹介動画
-          </h2> */}
-          <div className={styles.movieContainer}>
-            <div className={styles.movieWrapper}>
-              <div
-                className={styles.thumbnailWrapper}
-                onClick={() => setIsVideoModalOpen(true)}
-              >
-                <div className={styles.buttonWrapper}>
-                  <PlayButton
-                    style={{
-                      width: "60px",
-                      height: "60px",
-                      stroke: "white",
-                      fill: "none",
-                      strokeWidth: "10px",
-                    }}
-                  />
-                  <p>動画を見る</p>
-                </div>
-              </div>
-            </div>
-            {/* <div className={styles.textWrapper}>
-              <p>
-                <span className={styles.segment}>懐かしい香りがして、</span>
-                <span className={styles.segment}>
-                  ふと誰かのことを思い出した
-                </span>
-                <span className={styles.segment}>経験はありませんか？</span>
-                <br />
-                <span
-                  className={styles.segment}
-                  style={{marginLeft: "-0.5rem"}}
-                >
-                  「気配の花」はそんな香りの力を使って
-                </span>
-                <span className={styles.segment}>
-                  大切な人にあなたの気配を届けます。
-                </span>
-              </p>
-            </div> */}
-          </div>
+          <MovieSection />
         </AnimatedSection>
-        <VideoModal
-          isOpen={isVideoModalOpen}
-          onClose={() => setIsVideoModalOpen(false)}
-          videoId="aOPO_Qeg3zE"
-        />
-        <AnimatedSection id="usage" style={{padding: 0}}>
+
+        {/* 横スクロールセクション */}
+        <section
+          ref={sectionRef}
+          className={styles.horizontalSection} /* flex gap の干渉回避用に追加 */
+        >
           <h2
             className={`${styles.headline} ${zenOldMincho.className}`}
-            style={{textAlign: "center"}}
+            style={{
+              position: "sticky",
+              top: "3rem",
+              zIndex: 1000,
+              width: "100%",
+              textAlign: "center",
+            }}
           >
             使い方
           </h2>
-          <UsageSlideshow />
-        </AnimatedSection>
-        <AnimatedSection id="comment" style={{padding: 0}}>
-          <div className={styles.commentSectionContainer}>
-            <div className={`${styles.commentSectionWrapper} ${styles.left}`}>
-              <h2
-                className={`${styles.headline} ${zenOldMincho.className}`}
-                style={{
-                  textAlign: "center",
-                  width: "100vw",
-                  // marginBottom: "10rem",
-                }}
-              >
-                <span className={styles.segment}>例えば、</span>
-                <span className={styles.segment}>こんな方に</span>
-              </h2>
-              <div className={styles.commentContentWrapper}>
-                <div className={styles.profileContainer}>
-                  <h3 className={styles.red}>
-                    家族と離れて暮らす
-                    <br />
-                    お子さんご夫婦
-                  </h3>
-                  <div className={styles.profileImageWrapper}>
-                    <Image
-                      src="/img/otaki_family.png"
-                      alt="otaki"
-                      fill
-                      className={styles.profileImage}
-                    />
-                  </div>
-                </div>
 
-                <div className={`${styles.commentContainer}`}>
-                  <p>
-                    <span
-                      className={styles.segment}
-                      style={{marginLeft: "-0.5rem"}}
-                    >
-                      「あと
-                    </span>
-                    <span className={styles.segment}>何回</span>
-                    <span className={styles.segment}>会えるんだろう」</span>
-                    <span className={styles.segment}>と</span>
-                    <span className={styles.segment}>思う</span>
-                    <span className={styles.segment}>ことが</span>
-                    <span className={styles.segment}>増えました。</span>
-                    <br />
-                    <span className={styles.segment}>上京して</span>
-                    <span className={styles.segment}>もうすぐ</span>
-                    <span className={styles.segment}>20年。</span>
-                    <span className={styles.segment}>実家に</span>
-                    <span className={styles.segment}>帰るのは</span>
-                    <span className={styles.segment}>お盆と</span>
-                    <span className={styles.segment}>お正月の</span>
-                    <span className={styles.segment}>2回程度で、</span>
-                    <span className={styles.segment}>仕事が</span>
-                    <span className={styles.segment}>忙しく</span>
-                    <span className={styles.segment}>帰れない</span>
-                    <span className={styles.segment}>年も</span>
-                    <span className={styles.segment}>あったりします。</span>
-                    <span className={styles.segment}>もっと</span>
-                    <span className={styles.segment}>頻繁に</span>
-                    <span className={styles.segment}>帰れたら</span>
-                    <span className={styles.segment}>いいけれど、</span>
-                    <span className={styles.segment}>それも</span>
-                    <span className={styles.segment}>難しい。</span>
-                    <span className={styles.segment}>LINEや</span>
-                    <span className={styles.segment}>電話も、</span>
-                    <span className={styles.segment}>なかなか</span>
-                    <span className={styles.segment}>できなかったり、</span>
-                    <span className={styles.segment}>用も</span>
-                    <span className={styles.segment}>ないのに</span>
-                    <span className={styles.segment}>するのは</span>
-                    <span className={styles.segment}>照れくさかったり。</span>
-                    <br />
-                    <span
-                      className={styles.segment}
-                      style={{marginLeft: "-0.5rem"}}
-                    >
-                      「気配の花」は、
-                    </span>
-                    <span className={styles.segment}>毎日の</span>
-                    <span className={styles.segment}>挨拶の</span>
-                    <span className={styles.segment}>延長線上で</span>
-                    <span className={styles.segment}>両親に</span>
-                    <span className={styles.segment}>自分の</span>
-                    <span className={styles.segment}>気配を</span>
-                    <span className={styles.segment}>送れる</span>
-                    <span className={styles.segment}>ところが</span>
-                    <span className={styles.segment}>気軽で</span>
-                    <span className={styles.segment}>いいと</span>
-                    <span className={styles.segment}>思いました。</span>
-                    <span className={styles.segment}>朝</span>
-                    <span className={styles.segment}>起きて</span>
-                    <span className={styles.segment}>花が</span>
-                    <span className={styles.segment}>香っていると、</span>
-                    <span className={styles.segment}>「あ、母さん</span>
-                    <span className={styles.segment}>今日も</span>
-                    <span className={styles.segment}>早起きだな」</span>
-                    <span className={styles.segment}>とか。</span>
-                    <span className={styles.segment}>両親が</span>
-                    <span className={styles.segment}>元気で</span>
-                    <span className={styles.segment}>いることが</span>
-                    <span className={styles.segment}>わかるのも</span>
-                    <span className={styles.segment}>安心します。</span>
-                  </p>
-                </div>
+          <div ref={containerRef} className={styles.horizontalContainer}>
+            {steps.map((s, i) => (
+              <div key={i} className={`${styles.panel} panel`}>
+                <UsageSlideshow {...s} index={i} />
               </div>
-            </div>
-
-            <div className={`${styles.commentSectionWrapper} ${styles.right}`}>
-              <div
-                className={`${styles.commentContentWrapper} ${styles.right}`}
-              >
-                <div className={`${styles.profileContainer} ${styles.right}`}>
-                  <div className={styles.profileImageWrapper}>
-                    <Image
-                      src="/img/ito_family.png"
-                      alt="otaki-parents"
-                      fill
-                      className={styles.profileImage}
-                    />
-                  </div>
-                  <h3 className={styles.blue}>
-                    子どもと離れて暮らす
-                    <br />
-                    ご両親
-                  </h3>
-                </div>
-                <div className={styles.commentContainer}>
-                  <p>
-                    <span className={styles.segment}>正直に</span>
-                    <span className={styles.segment}>言えば</span>
-                    <span className={styles.segment}>「もっと</span>
-                    <span className={styles.segment}>帰ってきて</span>
-                    <span className={styles.segment}>くれたら</span>
-                    <span className={styles.segment}>嬉しいな」</span>
-                    <span className={styles.segment}>とは</span>
-                    <span className={styles.segment}>思い</span>
-                    <span className={styles.segment}>ます。</span>
-                    <br />
-                    <span className={styles.segment}>でも</span>
-                    <span className={styles.segment}>東京で</span>
-                    <span className={styles.segment}>家庭を</span>
-                    <span className={styles.segment}>持って、</span>
-                    <span className={styles.segment}>向こうの</span>
-                    <span className={styles.segment}>生活が</span>
-                    <span className={styles.segment}>あるのも</span>
-                    <span className={styles.segment}>わかるから</span>
-                    <span className={styles.segment}>口うるさく</span>
-                    <span className={styles.segment}>言うのは</span>
-                    <span className={styles.segment}>やめよう</span>
-                    <span className={styles.segment}>と</span>
-                    <span className={styles.segment}>思って</span>
-                    <span className={styles.segment}>いました。</span>
-                    <br />
-                    <span className={styles.segment}>LINEも</span>
-                    <span className={styles.segment}>用が</span>
-                    <span className={styles.segment}>あるとき</span>
-                    <span className={styles.segment}>以外は</span>
-                    <span className={styles.segment}>送らないですね、</span>
-                    <span className={styles.segment}>返信が</span>
-                    <span className={styles.segment}>こなかったら</span>
-                    <span className={styles.segment}>寂しいので（笑）</span>
-                    <br />
-                    <span
-                      className={styles.segment}
-                      style={{marginLeft: "-0.5rem"}}
-                    >
-                      「気配の花」は、
-                    </span>
-                    <span className={styles.segment}>子どもとの</span>
-                    <span className={styles.segment}>毎日の</span>
-                    <span className={styles.segment}>ちょっとした</span>
-                    <span className={styles.segment}>コミュニケーション</span>
-                    <span className={styles.segment}>のように</span>
-                    <span className={styles.segment}>なって</span>
-                    <span className={styles.segment}>います。</span>
-                    <br />
-                    <span className={styles.segment}>一緒に</span>
-                    <span className={styles.segment}>暮らして</span>
-                    <span className={styles.segment}>いた</span>
-                    <span className={styles.segment}>頃みたいに</span>
-                    <span
-                      className={styles.segment}
-                      style={{marginLeft: "-0.5rem"}}
-                    >
-                      「おはよう」とか
-                    </span>
-                    <span
-                      className={styles.segment}
-                      style={{marginLeft: "-0.5rem"}}
-                    >
-                      「ただいま」が
-                    </span>
-                    <span className={styles.segment}>言えて、</span>
-                    <span className={styles.segment}>それが</span>
-                    <span className={styles.segment}>香りで</span>
-                    <span className={styles.segment}>残るのは</span>
-                    <span className={styles.segment}>けっこう</span>
-                    <span className={styles.segment}>嬉しい</span>
-                    <span className={styles.segment}>ものですね。</span>
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </AnimatedSection>
-        <section id="contact">
-          <div className={styles.contact}>
-            <div className={styles.contactItemsWrapper}>
-              <div className={`${styles.contactItem} ${styles.contactForm}`}>
-                <div className={`${styles.contactItem}`}>
-                  <p>お問い合わせ</p>
-                  <h2 className={inter.className} style={{fontWeight: "700"}}>
-                    Dentsu Lab Tokyo
-                  </h2>
-                  <div className={styles.address}>
-                    <p>東京都中央区銀座7-14-16 太陽銀座ビル1階</p>
-                    <p>dentsu-lab-tokyo@dentsu.co.jp</p>
-                  </div>
-                </div>
-              </div>
-              <div className={styles.contactItem}>
-                <Link href="https://dentsulab.tokyo/">
-                  <div className={styles.bottomLogoWrapper}>
-                    <DLLogo style={{width: "100%", height: "auto"}} />
-                  </div>
-                </Link>
-              </div>
-            </div>
+            ))}
           </div>
         </section>
+
+        <CommentSection />
+        <ContactSection />
       </main>
-      <div className={styles.footer}></div>
     </>
   );
 }

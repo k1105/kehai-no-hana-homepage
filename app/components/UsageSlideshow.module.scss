@@ -1,63 +1,27 @@
 .container {
-  width: 100vw;
-  overflow-x: hidden;
-}
-
-.slideshowContainer {
-  position: relative;
-  aspect-ratio: 1519/651;
-  width: 80vw;
-  margin: 0 auto;
-  background: transparent;
+  width: 500vw; /* 5枚分の幅 */
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  flex-wrap: nowrap;
 }
 
-.imageSection {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  /* overflow: hidden; 一時的に削除 */
+.panel {
+  flex: 0 0 100vw !important; /* basis を確実に固定 */
+  max-width: 100vw; /* 収縮保険 */
+  flex-shrink: 0; /* shrink 0 を明示 */
 }
 
-.imageWrapper {
+.panelContent {
+  width: 80vw; /* 相対値に変更して確実に高さが出る */
+  height: 80vh; /* ここも vh にすると親が 0 高にならない */
   position: relative;
+}
+
+.panelImage {
+  object-fit: contain;
   width: 100%;
   height: 100%;
 }
 
-.slideshowTrack {
-  display: flex;
-  width: 500%; /* 5枚の画像分の幅 */
-  height: 100%;
-  transition: transform 0.3s ease-in-out;
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
-.pcTrack {
-  display: flex;
-}
-
-.spTrack {
-  display: none;
-}
-
-.slideItem {
-  position: relative;
-  width: 20%; /* 5枚の画像なので各20% */
-  height: 100%;
-  flex-shrink: 0;
-}
-
-.slideshowImage {
-  transition: opacity 0.3s ease-in-out;
-}
-
-/* PC用画像スタイル */
 .pcImage {
   display: block;
 }
@@ -76,9 +40,12 @@
   justify-content: center;
   gap: 0.8rem;
   z-index: 10;
+  width: 100%;
+  pointer-events: none;
 }
 
 .stepIndicator {
+  pointer-events: auto;
   display: flex;
   gap: 1.2rem;
 }
@@ -105,40 +72,18 @@
 }
 
 @media (max-width: 900px) {
-  .slideshowContainer {
+  .panelContent {
     aspect-ratio: 944/1077;
-    width: 90vw;
-    margin: 0 auto;
-    min-height: unset;
-    padding: 0;
+    width: 90%;
+    height: 90%;
   }
 
-  .imageSection {
-    width: 100%;
-    height: 100%;
-  }
-
-  .imageWrapper {
-    width: 100%;
-    height: 100%;
-  }
-
-  .pcTrack {
-    display: none;
-  }
-
-  .spTrack {
-    display: flex;
-  }
-
-  /* SP用画像スタイル */
   .pcImage {
     display: none;
   }
 
   .spImage {
     display: block;
-    aspect-ratio: 944/1077;
   }
 
   .navigation {
