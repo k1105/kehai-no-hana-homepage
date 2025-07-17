@@ -6,7 +6,7 @@
 
 .panel {
   flex: 0 0 100vw !important; /* basis を確実に固定 */
-  max-width: 100vw; /* 収縮保険 */
+  max-width: 80vw; /* 収縮保険 */
   flex-shrink: 0; /* shrink 0 を明示 */
 }
 
