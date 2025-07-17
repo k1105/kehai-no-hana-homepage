@@ -1,10 +1,11 @@
-import {useState} from "react";
 import styles from "../page.module.scss";
-import VideoModal from "./VideoModal";
 import {PlayButton} from "./play_button";
 
-export default function MovieSection() {
-  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
+interface MovieSectionProps {
+  onOpenVideo: (videoId: string) => void;
+}
+
+export default function MovieSection({ onOpenVideo }: MovieSectionProps) {
 
   return (
     <>
@@ -12,7 +13,7 @@ export default function MovieSection() {
         <div className={styles.movieWrapper}>
           <div
             className={styles.thumbnailWrapper}
-            onClick={() => setIsVideoModalOpen(true)}
+            onClick={() => onOpenVideo("aOPO_Qeg3zE")}
           >
             <div className={styles.buttonWrapper}>
               <PlayButton
@@ -29,11 +30,6 @@ export default function MovieSection() {
           </div>
         </div>
       </div>
-      <VideoModal
-        isOpen={isVideoModalOpen}
-        onClose={() => setIsVideoModalOpen(false)}
-        videoId="aOPO_Qeg3zE"
-      />
     </>
   );
 }

@@ -1,10 +1,21 @@
 import Image from "next/image";
+import {useRef} from "react";
 import styles from "../page.module.scss";
+import {splitText} from "@/app/utils/splitText";
+import {useCharAnimation} from "@/app/hooks/useCharAnimation";
 
 export default function ImageSection() {
+  const textRef = useRef<HTMLParagraphElement>(null);
+
+  // 文字アニメーションを適用（imageSectionの上端がビューポートの上端に到達したときに開始）
+  useCharAnimation(textRef as React.RefObject<HTMLElement>, {
+    start: "top top",
+  });
+
   return (
     <div className={styles.imageSection}>
       <p
+        ref={textRef}
         className={styles.statement}
         style={{
           color: "white",
@@ -15,17 +26,19 @@ export default function ImageSection() {
           zIndex: 1000,
         }}
       >
+        {/* 1 行ずつ splitText で <span class="char">…</span> 化 */}
         <span className={styles.shortHeight}>
-          私たちは
+          {splitText("私たちは")}
           <br />
-          ゆるやかに
+          {splitText("ゆるやかに")}
           <br />
-          でもたしかに
+          {splitText("でもたしかに")}
           <br />
-          つながっている。
+          {splitText("つながっている。")}
         </span>
       </p>
 
+      {/* 画像はそのまま */}
       <div className={styles.statementImages}>
         <div className={styles.moodMicWrapper}>
           <div className={styles.statementImageWrapper}>

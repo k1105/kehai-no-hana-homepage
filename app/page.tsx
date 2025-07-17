@@ -1,6 +1,5 @@
 "use client";
 import styles from "./page.module.scss";
-import Image from "next/image";
 import AnimatedSection from "./components/AnimatedSection";
 import {useEffect, useRef, useState} from "react";
 import {Zen_Kaku_Gothic_New, Zen_Old_Mincho} from "next/font/google";
@@ -26,13 +25,27 @@ export default function Home() {
   const [showLogo, setShowLogo] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
+  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
+  const [videoId, setVideoId] = useState("");
+
+  const handleOpenVideo = (id: string) => {
+    setVideoId(id);
+    setIsVideoModalOpen(true);
+  };
+
+  const handleCloseVideo = () => {
+    setIsVideoModalOpen(false);
+    setVideoId(""); // 動画IDをクリアして再生を停止
+  };
 
   const sectionRef = useRef<HTMLDivElement>(null); // pin 対象
   const containerRef = useRef<HTMLDivElement>(null); // 横に動かす
 
   /* モバイル判定 */
   useEffect(() => {
-    if (typeof window !== "undefined") setIsMobile(window.innerWidth <= 600);
+    if (typeof window !== "undefined") {
+      setIsMobile(window.innerWidth <= 600);
+    }
   }, []);
 
   /* 横スクロール初期化 */
@@ -122,6 +135,19 @@ export default function Home() {
     };
   }, [lastScrollY, isMobile]);
 
+  /* モーダル表示時のスクロールロック */
+  useEffect(() => {
+    if (isVideoModalOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isVideoModalOpen]);
+
   /* 使い方画像 */
   const steps = [
     {step: "/img/usage/pc/step1.png", stepSp: "/img/usage/sp/step1.png"},
@@ -139,13 +165,7 @@ export default function Home() {
         <div
           className={`${styles.fixedLogo} ${showLogo ? styles.visible : ""}`}
         >
-          <Image
-            src="/logo.svg"
-            alt="logo"
-            width={200}
-            height={51}
-            style={{objectFit: "contain"}}
-          />
+          <Logo style={{objectFit: "contain", fill: "white"}} />
         </div>
 
         <p className={styles.initialTagline}>
@@ -154,32 +174,30 @@ export default function Home() {
           大切な人へ。
         </p>
 
-        <div className={styles.stickyLogoWrapper}>
+        <div className={styles.firstView}>
           <div className={styles.logoWrapper}>
             <p>元気だよ、のかわりに</p>
             <div className={styles.logoImageWrapper}>
               <Logo style={{objectFit: "contain", fill: "white"}} />
             </div>
           </div>
-          <div className={styles.firstView}>
-            <video autoPlay muted loop playsInline style={{objectFit: "cover"}}>
-              {isMobile ? (
-                <source src="/mov/movie_mobile.mp4" type="video/mp4" />
-              ) : (
-                <source src="/mov/movie.mp4" type="video/mp4" />
-              )}
-            </video>
-          </div>
-          <AnimatedSection id="statement" style={{padding: 0}}>
-            <StatementSection />
-          </AnimatedSection>
+          <video autoPlay muted loop playsInline style={{objectFit: "cover"}}>
+            {isMobile ? (
+              <source src="/mov/movie_mobile.mp4" type="video/mp4" />
+            ) : (
+              <source src="/mov/movie.mp4" type="video/mp4" />
+            )}
+          </video>
         </div>
+        <AnimatedSection id="statement" style={{padding: 0}}>
+          <StatementSection />
+        </AnimatedSection>
 
         <AnimatedSection id="image" style={{padding: 0}}>
           <ImageSection />
         </AnimatedSection>
         <AnimatedSection id="movie" style={{background: "#b1bcbe", padding: 0}}>
-          <MovieSection />
+          <MovieSection onOpenVideo={handleOpenVideo} />
         </AnimatedSection>
 
         {/* 横スクロールセクション */}
@@ -212,6 +230,43 @@ export default function Home() {
         <CommentSection />
         <ContactSection />
       </main>
+
+      {/* Video Modal */}
+      <div
+        className={`${styles.modalOverlay} ${
+          isVideoModalOpen ? styles.visible : ""
+        }`}
+        onClick={handleCloseVideo}
+      >
+        <div
+          className={styles.modalContent}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <button className={styles.closeButton} onClick={handleCloseVideo}>
+            ×
+          </button>
+          <div className={styles.videoWrapper}>
+            {videoId && (
+              <iframe
+                width="100%"
+                height="100%"
+                src={`https://www.youtube.com/embed/${videoId}?autoplay=1`}
+                title="YouTube video player"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '100%',
+                }}
+              />
+            )}
+          </div>
+        </div>
+      </div>
     </>
   );
 }
