@@ -60,17 +60,25 @@ export default function Home() {
       containerRef.current
     );
     const total = panels.length;
-    const scrollLength = window.innerWidth * (total - 1); // 固定距離で OK
+    const panelWidth = 40; // 40vw per panel
+    const gapWidth = 5; // 5vw gap between panels
+    const totalWidth = panelWidth * total + gapWidth * (total - 1); // 40vw × 5 + 5vw × 4 = 220vw
+    const scrollLength =
+      ((window.innerWidth * (panelWidth + gapWidth)) / 100) * (total - 1); // (40vw + 5vw) × 4
 
     /* 必要分の高さを確保 (pinSpacing:false の代わり) */
     sectionRef.current.style.height = `${scrollLength + window.innerHeight}px`;
 
     /* パネル列の幅を強制 */
-    containerRef.current.style.width = `${total * 100}vw`;
+    containerRef.current.style.width = `${totalWidth}vw`;
+
+    /* 初期位置を設定（最初の要素を中央に配置） */
+    const initialOffset = (window.innerWidth * 30) / 100; // 50vw - 20vw = 30vw
+    gsap.set(containerRef.current, {x: initialOffset});
 
     /* GSAP アニメーション */
     const tween = gsap.to(containerRef.current, {
-      x: -scrollLength,
+      x: initialOffset - scrollLength,
       ease: "none",
       scrollTrigger: {
         trigger: sectionRef.current,
@@ -90,7 +98,7 @@ export default function Home() {
           ) {
             gsap.set(containerRef.current, {
               height: "100vh",
-              width: "100vw",
+              width: "220vw",
             });
             sectionRef.current.style.height = "100vh";
           }
@@ -150,11 +158,11 @@ export default function Home() {
 
   /* 使い方画像 */
   const steps = [
-    {step: "/img/usage/pc/step1.png", stepSp: "/img/usage/sp/step1.png"},
-    {step: "/img/usage/pc/step2.png", stepSp: "/img/usage/sp/step2.png"},
-    {step: "/img/usage/pc/step3.png", stepSp: "/img/usage/sp/step3.png"},
-    {step: "/img/usage/pc/step4.png", stepSp: "/img/usage/sp/step4.png"},
-    {step: "/img/usage/pc/step5.png", stepSp: "/img/usage/sp/step5.png"},
+    {step: "/img/usage/tmp.png", stepSp: "/img/usage/tmp.png"},
+    {step: "/img/usage/tmp.png", stepSp: "/img/usage/tmp.png"},
+    {step: "/img/usage/tmp.png", stepSp: "/img/usage/tmp.png"},
+    {step: "/img/usage/tmp.png", stepSp: "/img/usage/tmp.png"},
+    {step: "/img/usage/tmp.png", stepSp: "/img/usage/tmp.png"},
   ];
 
   return (
@@ -252,15 +260,14 @@ export default function Home() {
                 height="100%"
                 src={`https://www.youtube.com/embed/${videoId}?autoplay=1`}
                 title="YouTube video player"
-                frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowFullScreen
                 style={{
-                  position: 'absolute',
+                  position: "absolute",
                   top: 0,
                   left: 0,
-                  width: '100%',
-                  height: '100%',
+                  width: "100%",
+                  height: "100%",
                 }}
               />
             )}

@@ -1,17 +1,18 @@
 .container {
-  width: 500vw; /* 5枚分の幅 */
+  width: 220vw; /* 5枚分の幅 (5 × 40vw) + 4 × 5vw gap */
   display: flex;
   flex-wrap: nowrap;
+  gap: 5vw;
 }
 
 .panel {
-  flex: 0 0 100vw !important; /* basis を確実に固定 */
-  max-width: 80vw; /* 収縮保険 */
+  flex: 0 0 40vw !important; /* basis を確実に固定 */
+  max-width: 40vw; /* 収縮保険 */
   flex-shrink: 0; /* shrink 0 を明示 */
 }
 
 .panelContent {
-  width: 80vw; /* 相対値に変更して確実に高さが出る */
+  width: 40vw; /* 相対値に変更して確実に高さが出る */
   height: 80vh; /* ここも vh にすると親が 0 高にならない */
   position: relative;
 }

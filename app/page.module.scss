@@ -249,46 +249,90 @@
 
 .commentSectionContainer {
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 5rem 0;
+  width: 100%;
+}
+
+.commentColumns {
+  display: flex;
   justify-content: space-between;
-  &.right {
-    align-items: flex-end;
+  width: 100%;
+  max-width: 95vw;
+  gap: 2rem;
+  padding: 0 5vw;
+  position: relative;
+}
+
+.commentColumn {
+  display: flex;
+  flex-direction: column;
+
+  &:first-child {
+    position: absolute;
+    left: 5vw;
+    top: -5rem;
+    width: 44vw;
+    z-index: 2;
+
+    .commentContent {
+      background-color: var(--red);
+    }
+  }
+
+  &:last-child {
+    position: relative;
+    z-index: 1;
+    margin-left: auto;
+    width: 44vw;
+
+    .commentContent {
+      background-color: #e6f3ff;
+    }
   }
 }
 
-.commentContentWrapper {
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  padding: 5rem 0 15rem;
-  background-color: var(--red);
-  &.right {
-    background-color: var(--blue);
-  }
+.commentContent {
+  display: flex;
+  flex-direction: column;
+  padding: 10rem;
+  height: 100%;
+  min-height: 600px;
 }
 
-.profileContainer {
+.commentHeader {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  width: 35vw;
-  margin: 0 auto 3rem;
-  h3 {
-    color: var(--brown);
-  }
+  margin-bottom: 2rem;
+}
 
-  &.right {
-    flex-direction: row-reverse;
-    margin-left: auto;
-  }
+.commentTitle {
+  color: var(--brown);
+  font-weight: 700;
+  font-size: 1.2rem;
+  line-height: 1.6;
+  text-align: left;
+  flex: 1;
+}
 
-  .profileImageWrapper {
-    position: relative;
-    width: 200px;
-    height: 200px;
-    .profileImage {
-      border-radius: 50%;
-      object-fit: cover;
-    }
+.commentText {
+  color: var(--brown);
+  font-weight: 700;
+  line-height: 2rem;
+  text-align: left;
+}
+
+.profileImageWrapper {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  margin-left: 2rem;
+
+  .profileImage {
+    border-radius: 50%;
+    object-fit: cover;
   }
 }
 
@@ -459,12 +503,68 @@
   .commentSectionContainer {
     flex-direction: column;
     gap: 1rem;
+    padding: 3rem 0;
+  }
+
+  .commentColumns {
+    flex-direction: column;
+    gap: 3rem;
+    padding: 0 3vw;
+    position: static;
+    margin-bottom: 10rem;
+  }
+
+  .commentColumn {
+    position: static;
+    width: 90vw;
+    margin-left: 0;
+
+    &:first-child {
+      position: static;
+      width: 90vw;
+      left: auto;
+      top: auto;
+    }
+
+    &:last-child {
+      width: 90vw;
+      position: static;
+      margin-left: 0;
+    }
+  }
+
+  .commentContent {
+    min-height: auto;
+    padding: 3rem;
+    width: 100%;
+  }
+
+  .commentHeader {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .commentTitle {
+    font-size: 1rem;
+    text-align: center;
+  }
+
+  .commentText {
+    font-size: 0.9rem;
+    line-height: 1.8rem;
+  }
+
+  .profileImageWrapper {
+    width: 150px;
+    height: 150px;
+    margin-left: 0;
   }
 
   .fixedLogo {
     top: 1rem;
     left: 1rem;
-    width: 50px;
+    width: 150px;
   }
 
   .usageContainer {
@@ -490,6 +590,7 @@
 
   .statement {
     width: 100%;
+    padding: 0 3vw;
   }
 
   /* 横スクロール区間用 */
@@ -508,7 +609,7 @@
   }
 
   .panel {
-    flex: 0 0 100vw !important;
+    flex: 0 0 40vw !important;
     height: 100vh;
     display: flex;
     align-items: center;
@@ -546,7 +647,7 @@
 }
 
 .panel {
-  flex: 0 0 100vw !important;
+  flex: 0 0 40vw !important;
   height: 100vh;
   display: flex;
   align-items: center;
