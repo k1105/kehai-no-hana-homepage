@@ -60,11 +60,14 @@ export default function Home() {
       containerRef.current
     );
     const total = panels.length;
-    const panelWidth = 40; // 40vw per panel
-    const gapWidth = 5; // 5vw gap between panels
-    const totalWidth = panelWidth * total + gapWidth * (total - 1); // 40vw × 5 + 5vw × 4 = 220vw
+
+    // スマホとデスクトップで異なる設定
+    const isMobileDevice = window.innerWidth <= 600;
+    const panelWidth = isMobileDevice ? 80 : 40; // スマホでは80vw、デスクトップでは40vw
+    const gapWidth = 5;
+    const totalWidth = panelWidth * total + gapWidth * (total - 1);
     const scrollLength =
-      ((window.innerWidth * (panelWidth + gapWidth)) / 100) * (total - 1); // (40vw + 5vw) × 4
+      ((window.innerWidth * (panelWidth + gapWidth)) / 100) * (total - 1);
 
     /* 必要分の高さを確保 (pinSpacing:false の代わり) */
     sectionRef.current.style.height = `${scrollLength + window.innerHeight}px`;
@@ -73,7 +76,9 @@ export default function Home() {
     containerRef.current.style.width = `${totalWidth}vw`;
 
     /* 初期位置を設定（最初の要素を中央に配置） */
-    const initialOffset = (window.innerWidth * 30) / 100; // 50vw - 20vw = 30vw
+    const initialOffset = isMobileDevice
+      ? (window.innerWidth * 10) / 100 // スマホでは10vw
+      : (window.innerWidth * 30) / 100; // デスクトップでは30vw
     gsap.set(containerRef.current, {x: initialOffset});
 
     /* GSAP アニメーション */
@@ -98,7 +103,7 @@ export default function Home() {
           ) {
             gsap.set(containerRef.current, {
               height: "100vh",
-              width: "220vw",
+              width: `${totalWidth}vw`,
             });
             sectionRef.current.style.height = "100vh";
           }
@@ -214,14 +219,7 @@ export default function Home() {
           className={styles.horizontalSection} /* flex gap の干渉回避用に追加 */
         >
           <h2
-            className={`${styles.headline} ${zenOldMincho.className}`}
-            style={{
-              position: "sticky",
-              top: "3rem",
-              zIndex: 1000,
-              width: "100%",
-              textAlign: "center",
-            }}
+            className={`${styles.headline} ${zenOldMincho.className} ${styles.usageHeadline}`}
           >
             使い方
           </h2>

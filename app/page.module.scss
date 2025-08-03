@@ -247,6 +247,14 @@
   animation-delay: 2s;
 }
 
+.usageHeadline {
+  position: sticky;
+  top: 1rem;
+  z-index: 1000;
+  width: 100%;
+  text-align: center;
+}
+
 .commentSectionContainer {
   display: flex;
   flex-direction: column;
@@ -606,10 +614,11 @@
     /* = containerRef */
     display: flex;
     height: 100vh;
+    gap: 10vw; /* スマホでは10vwの間隔 */
   }
 
   .panel {
-    flex: 0 0 40vw !important;
+    flex: 0 0 80vw !important; /* スマホでは80vw */
     height: 100vh;
     display: flex;
     align-items: center;
@@ -629,6 +638,10 @@
   .headline {
     font-size: 2.5rem;
   }
+
+  .usageHeadline {
+    top: 10rem;
+  }
 }
 
 /* 横スクロール区間用（デスクトップ用） */
@@ -643,14 +656,15 @@
 .horizontalContainer {
   /* = containerRef */
   display: flex;
-  height: 100vh;
+  gap: 5vw;
+  padding-bottom: 3rem;
 }
 
 .panel {
   flex: 0 0 40vw !important;
   height: 100vh;
   display: flex;
-  align-items: center;
+  align-items: top;
   justify-content: center;
 }
 
