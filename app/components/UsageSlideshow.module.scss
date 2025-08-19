@@ -100,3 +100,24 @@
     height: 16px;
   }
 }
+
+/* スマホ版（600px以下）での横スクロール無効化 */
+@media (max-width: 600px) {
+  .container {
+    width: 100% !important;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .panel {
+    flex: 0 0 auto !important;
+    max-width: 90vw !important;
+    width: 90vw !important;
+  }
+
+  .panelContent {
+    width: 100vw !important;
+    height: auto !important;
+    aspect-ratio: 944/1077;
+  }
+}

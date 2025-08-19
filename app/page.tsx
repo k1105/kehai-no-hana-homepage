@@ -63,7 +63,23 @@ export default function Home() {
 
     // スマホとデスクトップで異なる設定
     const isMobileDevice = window.innerWidth <= 600;
-    const panelWidth = isMobileDevice ? 80 : 40; // スマホでは80vw、デスクトップでは40vw
+
+    // スマホ版では横スクロールアニメーションを無効化
+    if (isMobileDevice) {
+      // スマホ版では通常の縦スクロール表示
+      sectionRef.current.style.height = "auto";
+      containerRef.current.style.transform = "none";
+
+      // スマホ版でも適切な画像サイズを設定
+      const panelWidth = 90; // スマホでは90vw
+      const gapWidth = 0;
+      const totalWidth = panelWidth * total + gapWidth * (total - 1);
+      containerRef.current.style.width = `${totalWidth}vw`;
+
+      return;
+    }
+
+    const panelWidth = 40; // デスクトップでは40vw
     const gapWidth = 5;
     const totalWidth = panelWidth * total + gapWidth * (total - 1);
     const scrollLength =
@@ -76,9 +92,7 @@ export default function Home() {
     containerRef.current.style.width = `${totalWidth}vw`;
 
     /* 初期位置を設定（最初の要素を中央に配置） */
-    const initialOffset = isMobileDevice
-      ? (window.innerWidth * 10) / 100 // スマホでは10vw
-      : (window.innerWidth * 30) / 100; // デスクトップでは30vw
+    const initialOffset = (window.innerWidth * 30) / 100; // デスクトップでは30vw
     gsap.set(containerRef.current, {x: initialOffset});
 
     /* GSAP アニメーション */
