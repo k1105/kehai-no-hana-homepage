@@ -27,6 +27,7 @@ export default function Home() {
   const [isMobile, setIsMobile] = useState(false);
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
   const [videoId, setVideoId] = useState("");
+  const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
 
   const handleOpenVideo = (id: string) => {
     setVideoId(id);
@@ -36,6 +37,14 @@ export default function Home() {
   const handleCloseVideo = () => {
     setIsVideoModalOpen(false);
     setVideoId(""); // 動画IDをクリアして再生を停止
+  };
+
+  const handleSlideChange = (direction: "prev" | "next") => {
+    if (direction === "prev" && currentSlideIndex > 0) {
+      setCurrentSlideIndex(currentSlideIndex - 1);
+    } else if (direction === "next" && currentSlideIndex < steps.length - 1) {
+      setCurrentSlideIndex(currentSlideIndex + 1);
+    }
   };
 
   const sectionRef = useRef<HTMLDivElement>(null); // pin 対象
@@ -75,6 +84,9 @@ export default function Home() {
       const gapWidth = 0;
       const totalWidth = panelWidth * total + gapWidth * (total - 1);
       containerRef.current.style.width = `${totalWidth}vw`;
+
+      // スマホ版でのスライド位置を初期化
+      gsap.set(containerRef.current, {x: 0});
 
       return;
     }
@@ -137,6 +149,20 @@ export default function Home() {
       window.removeEventListener("load", refresh);
     };
   }, []);
+
+  /* スマホ版でのスライド移動制御 */
+  useEffect(() => {
+    if (!isMobile || !containerRef.current) return;
+
+    const panelWidth = 100; // スマホでは90vw
+    const targetX = -(currentSlideIndex * panelWidth);
+
+    gsap.to(containerRef.current, {
+      x: `${targetX}vw`,
+      duration: 0.5,
+      ease: "power2.out",
+    });
+  }, [currentSlideIndex, isMobile]);
 
   /* ロゴ表示制御（変更なし） */
   useEffect(() => {
@@ -245,6 +271,29 @@ export default function Home() {
               </div>
             ))}
           </div>
+
+          {/* スマホ版でのナビゲーションボタン */}
+          {isMobile && (
+            <div className={styles.mobileNavigation}>
+              <button
+                className={styles.navButton}
+                onClick={() => handleSlideChange("prev")}
+                disabled={currentSlideIndex === 0}
+              >
+                ←
+              </button>
+              <span className={styles.slideIndicator}>
+                {currentSlideIndex + 1} / {steps.length}
+              </span>
+              <button
+                className={styles.navButton}
+                onClick={() => handleSlideChange("next")}
+                disabled={currentSlideIndex === steps.length - 1}
+              >
+                →
+              </button>
+            </div>
+          )}
         </section>
 
         <CommentSection />

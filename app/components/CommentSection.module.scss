@@ -1,0 +1,11 @@
+.headline {
+  text-align: center;
+  width: 100%;
+  margin-bottom: 10rem;
+}
+
+@media (max-width: 600px) {
+  .headline {
+    margin-bottom: 5rem;
+  }
+}

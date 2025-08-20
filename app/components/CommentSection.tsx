@@ -1,5 +1,6 @@
 import Image from "next/image";
 import styles from "../page.module.scss";
+import localStyles from "./CommentSection.module.scss";
 import {Zen_Old_Mincho} from "next/font/google";
 import AnimatedSection from "./AnimatedSection";
 import {splitTextByLine} from "../utils/splitTextByLine";
@@ -18,12 +19,7 @@ export default function CommentSection() {
     <AnimatedSection id="comment" style={{padding: 0}}>
       <div className={styles.commentSectionContainer}>
         <h2
-          className={`${styles.headline} ${zenOldMincho.className}`}
-          style={{
-            textAlign: "center",
-            width: "100%",
-            marginBottom: "10rem",
-          }}
+          className={`${styles.headline} ${zenOldMincho.className} ${localStyles.headline}`}
         >
           例えば、こんな方に
         </h2>

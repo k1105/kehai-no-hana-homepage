@@ -619,7 +619,7 @@
 
   .panel {
     flex: 0 0 80vw !important; /* スマホでは80vw */
-    height: 100vh;
+    // height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -640,7 +640,51 @@
   }
 
   .usageHeadline {
-    top: 10rem;
+    position: relative;
+  }
+
+  /* スマホ版でのナビゲーションボタン */
+  .mobileNavigation {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding: 1rem;
+  }
+
+  .navButton {
+    background: var(--brown);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .navButton:hover:not(:disabled) {
+    transform: scale(1.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .navButton:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  .slideIndicator {
+    font-size: 0.9rem;
+    color: var(--brown);
+    font-weight: 500;
+    min-width: 60px;
+    text-align: center;
   }
 }
 
@@ -656,13 +700,11 @@
 .horizontalContainer {
   /* = containerRef */
   display: flex;
-  gap: 5vw;
-  padding-bottom: 3rem;
+  height: auto;
+  gap: 0vw;
 }
 
 .panel {
-  flex: 0 0 40vw !important;
-  height: 100vh;
   display: flex;
   align-items: top;
   justify-content: center;
