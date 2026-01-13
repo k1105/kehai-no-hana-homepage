@@ -614,11 +614,13 @@
     /* = containerRef */
     display: flex;
     height: 100vh;
-    gap: 10vw; /* スマホでは10vwの間隔 */
+    gap: 0vw; /* スマホでも間隔なし */
+    width: 500vw; /* 5枚分の幅 (5 × 100vw) */
   }
 
   .panel {
-    flex: 0 0 80vw !important; /* スマホでは80vw */
+    flex: 0 0 100vw !important; /* スマホでは100vw（1枚ずつ表示） */
+    width: 100vw !important;
     // height: 100vh;
     display: flex;
     align-items: center;
@@ -686,6 +688,18 @@
     min-width: 60px;
     text-align: center;
   }
+
+  /* スマホ版でのカルーセルインジケーター */
+  .carouselIndicator {
+    bottom: 1rem;
+    gap: 0.8rem;
+  }
+
+  .indicatorDot {
+    width: 10px;
+    height: 10px;
+    border-width: 1.5px;
+  }
 }
 
 /* 横スクロール区間用（デスクトップ用） */
@@ -702,12 +716,54 @@
   display: flex;
   height: auto;
   gap: 0vw;
+  width: 500vw; /* 5枚分の幅 (5 × 100vw) */
 }
 
 .panel {
   display: flex;
-  align-items: top;
+  align-items: center;
   justify-content: center;
+  flex: 0 0 100vw; /* PC版でも1枚ずつ表示 */
+  width: 100vw;
+  height: 80vh; /* PC版でのパネルの高さ */
+  min-height: 600px; /* 最小高さを確保 */
+}
+
+/* カルーセルインジケーター（PC版・スマホ版共通） */
+.carouselIndicator {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.indicatorDot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid var(--brown);
+  background: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  pointer-events: auto;
+  padding: 0;
+  margin: 0;
+
+  &:hover {
+    transform: scale(1.2);
+    background: rgba(255, 255, 255, 1);
+  }
+}
+
+.indicatorDotActive {
+  background: var(--brown);
+  transform: scale(1.2);
 }
 
 .statementSection {

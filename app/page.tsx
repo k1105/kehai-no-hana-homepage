@@ -22,6 +22,15 @@ const zenKakuGothicNew = Zen_Kaku_Gothic_New({
 const zenOldMincho = Zen_Old_Mincho({weight: ["400"], subsets: ["latin"]});
 
 export default function Home() {
+  /* 使い方画像 */
+  const steps = [
+    {step: "/img/usage/pc/step1.png", stepSp: "/img/usage/tmp.png"},
+    {step: "/img/usage/pc/step2.png", stepSp: "/img/usage/tmp.png"},
+    {step: "/img/usage/pc/step3.png", stepSp: "/img/usage/tmp.png"},
+    {step: "/img/usage/pc/step4.png", stepSp: "/img/usage/tmp.png"},
+    {step: "/img/usage/pc/step5.png", stepSp: "/img/usage/tmp.png"},
+  ];
+
   const [showLogo, setShowLogo] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
@@ -57,104 +66,43 @@ export default function Home() {
     }
   }, []);
 
-  /* 横スクロール初期化 */
+  /* 横スクロール初期化（PC版でもカルーセル形式のため無効化） */
   useIsomorphicLayoutEffect(() => {
     if (!sectionRef.current || !containerRef.current) return;
-
-    gsap.registerPlugin(ScrollTrigger);
-
-    /* パネル枚数と固定距離 */
-    const panels = gsap.utils.toArray<HTMLElement>(
-      ".panel",
-      containerRef.current
-    );
-    const total = panels.length;
 
     // スマホとデスクトップで異なる設定
     const isMobileDevice = window.innerWidth <= 600;
 
-    // スマホ版では横スクロールアニメーションを無効化
+    // スマホ版では通常の縦スクロール表示
     if (isMobileDevice) {
-      // スマホ版では通常の縦スクロール表示
       sectionRef.current.style.height = "auto";
       containerRef.current.style.transform = "none";
 
-      // スマホ版でも適切な画像サイズを設定
-      const panelWidth = 90; // スマホでは90vw
+      const panelWidth = 100; // スマホでは100vw（1枚ずつ表示）
       const gapWidth = 0;
+      const total = steps.length;
       const totalWidth = panelWidth * total + gapWidth * (total - 1);
       containerRef.current.style.width = `${totalWidth}vw`;
 
-      // スマホ版でのスライド位置を初期化
       gsap.set(containerRef.current, {x: 0});
-
       return;
     }
 
-    const panelWidth = 40; // デスクトップでは40vw
-    const gapWidth = 5;
-    const totalWidth = panelWidth * total + gapWidth * (total - 1);
-    const scrollLength =
-      ((window.innerWidth * (panelWidth + gapWidth)) / 100) * (total - 1);
-
-    /* 必要分の高さを確保 (pinSpacing:false の代わり) */
-    sectionRef.current.style.height = `${scrollLength + window.innerHeight}px`;
-
-    /* パネル列の幅を強制 */
+    // PC版でもカルーセル形式のため、横スクロールアニメーションは無効化
+    sectionRef.current.style.height = "auto";
+    containerRef.current.style.transform = "none";
+    const total = steps.length;
+    const panelWidth = 100; // PC版でも100vw（1枚ずつ表示）
+    const totalWidth = panelWidth * total;
     containerRef.current.style.width = `${totalWidth}vw`;
+    gsap.set(containerRef.current, {x: 0});
+  }, [steps.length]);
 
-    /* 初期位置を設定（最初の要素を中央に配置） */
-    const initialOffset = (window.innerWidth * 30) / 100; // デスクトップでは30vw
-    gsap.set(containerRef.current, {x: initialOffset});
-
-    /* GSAP アニメーション */
-    const tween = gsap.to(containerRef.current, {
-      x: initialOffset - scrollLength,
-      ease: "none",
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: "top top",
-        end: `+=${scrollLength}`,
-        scrub: 1,
-        pin: true,
-        pinSpacing: false,
-        anticipatePin: 1,
-        // markers: true,
-        onUpdate: (self) => {
-          // アニメーション完了時に高さを戻す
-          if (
-            self.progress >= 1 &&
-            containerRef.current &&
-            sectionRef.current
-          ) {
-            gsap.set(containerRef.current, {
-              height: "100vh",
-              width: `${totalWidth}vw`,
-            });
-            sectionRef.current.style.height = "100vh";
-          }
-        },
-      },
-    });
-
-    /* 画像ロード/リサイズでリフレッシュ */
-    const refresh = () => ScrollTrigger.refresh();
-    window.addEventListener("resize", refresh);
-    window.addEventListener("load", refresh);
-
-    return () => {
-      tween.kill();
-      ScrollTrigger.getAll().forEach((t) => t.kill());
-      window.removeEventListener("resize", refresh);
-      window.removeEventListener("load", refresh);
-    };
-  }, []);
-
-  /* スマホ版でのスライド移動制御 */
+  /* スライド移動制御（PC版・スマホ版共通） */
   useEffect(() => {
-    if (!isMobile || !containerRef.current) return;
+    if (!containerRef.current) return;
 
-    const panelWidth = 100; // スマホでは90vw
+    const panelWidth = isMobile ? 100 : 100; // スマホでは100vw、PC版でも100vw（1枚ずつ表示）
     const targetX = -(currentSlideIndex * panelWidth);
 
     gsap.to(containerRef.current, {
@@ -200,15 +148,6 @@ export default function Home() {
       document.body.style.overflow = "unset";
     };
   }, [isVideoModalOpen]);
-
-  /* 使い方画像 */
-  const steps = [
-    {step: "/img/usage/tmp.png", stepSp: "/img/usage/tmp.png"},
-    {step: "/img/usage/tmp.png", stepSp: "/img/usage/tmp.png"},
-    {step: "/img/usage/tmp.png", stepSp: "/img/usage/tmp.png"},
-    {step: "/img/usage/tmp.png", stepSp: "/img/usage/tmp.png"},
-    {step: "/img/usage/tmp.png", stepSp: "/img/usage/tmp.png"},
-  ];
 
   return (
     <>
@@ -269,6 +208,20 @@ export default function Home() {
               <div key={i} className={`${styles.panel} panel`}>
                 <UsageSlideshow {...s} index={i} />
               </div>
+            ))}
+          </div>
+
+          {/* カルーセルインジケーター（PC版・スマホ版共通） */}
+          <div className={styles.carouselIndicator}>
+            {steps.map((_, i) => (
+              <button
+                key={i}
+                className={`${styles.indicatorDot} ${
+                  i === currentSlideIndex ? styles.indicatorDotActive : ""
+                }`}
+                onClick={() => setCurrentSlideIndex(i)}
+                aria-label={`Go to slide ${i + 1}`}
+              />
             ))}
           </div>
 

@@ -12,7 +12,7 @@
 }
 
 .panelContent {
-  width: 40vw; /* 相対値に変更して確実に高さが出る */
+  width: 80vw;
   height: 80vh; /* ここも vh にすると親が 0 高にならない */
   position: relative;
 }
