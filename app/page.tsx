@@ -12,7 +12,6 @@ import MovieSection from "./components/MovieSection";
 import StatementSection from "./components/StatementSection";
 import ContactSection from "./components/ContactSection";
 import gsap from "gsap";
-import {ScrollTrigger} from "gsap/ScrollTrigger";
 import {useIsomorphicLayoutEffect} from "./hooks/useIsomorphicLayoutEffect";
 
 const zenKakuGothicNew = Zen_Kaku_Gothic_New({
