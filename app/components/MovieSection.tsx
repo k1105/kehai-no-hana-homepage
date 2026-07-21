@@ -3,10 +3,13 @@ import {PlayButton} from "./play_button";
 
 interface MovieSectionProps {
   onOpenVideo: (videoId: string) => void;
+  watchLabel: string;
 }
 
-export default function MovieSection({ onOpenVideo }: MovieSectionProps) {
-
+export default function MovieSection({
+  onOpenVideo,
+  watchLabel,
+}: MovieSectionProps) {
   return (
     <>
       <div className={styles.movieContainer}>
@@ -25,7 +28,7 @@ export default function MovieSection({ onOpenVideo }: MovieSectionProps) {
                   strokeWidth: "10px",
                 }}
               />
-              <p>動画を見る</p>
+              <p>{watchLabel}</p>
             </div>
           </div>
         </div>

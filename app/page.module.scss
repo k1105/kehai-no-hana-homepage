@@ -45,6 +45,12 @@
   writing-mode: vertical-rl;
 }
 
+/* 英語版は横組み */
+.initialTaglineHorizontal {
+  writing-mode: horizontal-tb;
+  text-align: center;
+}
+
 .char {
   display: inline-block;
 }
@@ -645,60 +651,25 @@
     position: relative;
   }
 
-  /* スマホ版でのナビゲーションボタン */
-  .mobileNavigation {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  .carouselNavigation {
     gap: 1rem;
-    margin-top: 2rem;
-    padding: 1rem;
+    margin-top: 1rem;
   }
 
   .navButton {
-    background: var(--brown);
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 48px;
-    height: 48px;
-    font-size: 1.2rem;
-    cursor: pointer;
-    transition: all 0.2s ease-in-out;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .navButton:hover:not(:disabled) {
-    transform: scale(1.1);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  }
-
-  .navButton:disabled {
-    background: #ccc;
-    cursor: not-allowed;
-    opacity: 0.6;
-  }
-
-  .slideIndicator {
-    font-size: 0.9rem;
-    color: var(--brown);
-    font-weight: 500;
-    min-width: 60px;
-    text-align: center;
-  }
-
-  /* スマホ版でのカルーセルインジケーター */
-  .carouselIndicator {
-    bottom: 1rem;
-    gap: 0.8rem;
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
   }
 
   .indicatorDot {
     width: 10px;
     height: 10px;
     border-width: 1.5px;
+  }
+
+  .carouselIndicator {
+    gap: 0.6rem;
   }
 }
 
@@ -729,18 +700,46 @@
   min-height: 600px; /* 最小高さを確保 */
 }
 
-/* カルーセルインジケーター（PC版・スマホ版共通） */
-.carouselIndicator {
-  position: absolute;
-  bottom: 2rem;
-  left: 50%;
-  transform: translateX(-50%);
+/* カルーセルナビゲーション（PC版・スマホ版共通） */
+.carouselNavigation {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
-  z-index: 10;
-  pointer-events: none;
+  gap: 1.5rem;
+  margin-top: 2rem;
+  padding: 1rem;
+}
+
+.navButton {
+  background: var(--brown);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover:not(:disabled) {
+    transform: scale(1.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  &:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+}
+
+.carouselIndicator {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
 }
 
 .indicatorDot {
@@ -751,7 +750,6 @@
   background: rgba(255, 255, 255, 0.8);
   cursor: pointer;
   transition: all 0.3s ease-in-out;
-  pointer-events: auto;
   padding: 0;
   margin: 0;
 
@@ -905,5 +903,23 @@
     width: 100%;
     height: 100%;
     border: none;
+  }
+}
+
+.langSwitch {
+  position: fixed;
+  top: 1.2rem;
+  right: 1.2rem;
+  z-index: 3000;
+  color: white;
+  mix-blend-mode: difference;
+  font-size: 0.85rem;
+  letter-spacing: 0.15em;
+  text-decoration: none;
+  padding: 0.4rem 0.6rem;
+  transition: opacity 0.3s ease;
+
+  &:hover {
+    opacity: 0.6;
   }
 }

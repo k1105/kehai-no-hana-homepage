@@ -1,10 +1,16 @@
 import Image from "next/image";
-import {useRef} from "react";
+import {Fragment, useRef} from "react";
 import styles from "../page.module.scss";
 import {splitText} from "@/app/utils/splitText";
 import {useCharAnimation} from "@/app/hooks/useCharAnimation";
+import type {Dictionary, Lang} from "../dictionaries";
 
-export default function ImageSection() {
+interface ImageSectionProps {
+  lang: Lang;
+  dict: Dictionary;
+}
+
+export default function ImageSection({lang, dict}: ImageSectionProps) {
   const textRef = useRef<HTMLParagraphElement>(null);
 
   // 文字アニメーションを適用（imageSectionの上端がビューポートの上端に到達したときに開始）
@@ -28,13 +34,12 @@ export default function ImageSection() {
       >
         {/* 1 行ずつ splitText で <span class="char">…</span> 化 */}
         <span className={styles.shortHeight}>
-          {splitText("私たちは")}
-          <br />
-          {splitText("ゆるやかに")}
-          <br />
-          {splitText("でもたしかに")}
-          <br />
-          {splitText("つながっている。")}
+          {dict.imageLines.map((line, i) => (
+            <Fragment key={i}>
+              {i > 0 && <br />}
+              {splitText(line, lang)}
+            </Fragment>
+          ))}
         </span>
       </p>
 
